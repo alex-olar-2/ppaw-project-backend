@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36414.22 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractInfoIdentityDocument", "ExtractInfoIdentityDocument.csproj", "{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F58A8C9E-CB20-4736-88C1-CEDE077CC2A2}
+	EndGlobalSection
+EndGlobal
