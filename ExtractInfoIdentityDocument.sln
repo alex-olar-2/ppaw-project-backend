@@ -4,6 +4,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.14.36414.22 d17.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtractInfoIdentityDocument", "ExtractInfoIdentityDocument.csproj", "{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}"
+	ProjectSection(ProjectDependencies) = postProject
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A} = {9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Data", "Data", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Data.SDK", "..\Data.SDK\Data.SDK.csproj", "{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,9 +22,16 @@ Global
 		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E4B833D7-F482-43D8-BA16-DDE7CB4CBFB8}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{9E8B78C2-2F60-4B3B-9F81-FBA1A98D8E9A} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F58A8C9E-CB20-4736-88C1-CEDE077CC2A2}
