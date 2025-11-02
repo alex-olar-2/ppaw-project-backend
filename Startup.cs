@@ -1,6 +1,7 @@
 ﻿
 using ExtractInfoIdentityDocument.Internal;
 using ExtractInfoIdentityDocument.Internal.Interface;
+
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -8,7 +9,9 @@ using Microsoft.AspNetCore.Rewrite;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
+
 using System.Collections.Generic;
 using System.Security.Principal;
 
@@ -75,6 +78,8 @@ namespace ExtractInfoIdentityDocument
                 context.UseSqlServer(Configuration.GetConnectionString("Default"));
 
                 context.EnableSensitiveDataLogging();
+
+                context.LogTo(Console.WriteLine);
             });
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
