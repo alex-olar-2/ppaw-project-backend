@@ -94,7 +94,7 @@ namespace ExtractInfoIdentityDocument
                 c.RoutePrefix = "";
             });
             var option = new RewriteOptions();
-            option.AddRedirect("^$", "index.html");
+            option.AddRedirect("^$", "swagger");
             app.UseRewriter(option);
             app.UseHttpsRedirection();
 

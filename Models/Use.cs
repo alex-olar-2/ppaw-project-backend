@@ -2,9 +2,9 @@
 {
     public class Use : BaseEntity
     {
-        public string UserId { get; set; }
+        public Guid UserId { get; set; }
         public bool IsSucceeded { get; set; }
-        public string IdentityCardId { get; set; }
+        public Guid IdentityCardId { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime ModifiedAt { get; set; }
         public User User { get; set; }
