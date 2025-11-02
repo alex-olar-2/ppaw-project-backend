@@ -1,3 +1,5 @@
+using ExtractInfoIdentityDocument.Models;
+
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
@@ -26,7 +28,7 @@ public class RoleController : ControllerBase
     }
 
     [HttpPost]
-    public Task<IActionResult> AddRole()
+    public Task<IActionResult> AddRole([FromBody] Role role)
     {
         return null;
     }
@@ -43,7 +45,7 @@ public class RoleController : ControllerBase
         return null;
     }
 
-    [HttpDelete("All")]
+    [HttpDelete]
     public Task<IActionResult> DeleteAllRole()
     {
         return null;
