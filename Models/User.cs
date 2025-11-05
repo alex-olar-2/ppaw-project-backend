@@ -11,6 +11,5 @@
         public Subscription Subscription { get; set; }
         public Role Role { get; set; }
 
-        public ICollection<Use> Uses { get; set; } = new List<Use>();
     }
 }

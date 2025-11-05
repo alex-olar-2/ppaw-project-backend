@@ -4,7 +4,7 @@ using ExtractInfoIdentityDocument.Internal.Interface;
 
 namespace ExtractInfoIdentityDocument.Internal
 {
-    public class DataRepository<T> : Repository<T, DataContext>, IDataRepository<T> where T : class
+    public class DataRepository<T> : BaseRepository<T, DataContext>, IDataRepository<T> where T : class
     {
         private readonly DataContext _dataContext;
 

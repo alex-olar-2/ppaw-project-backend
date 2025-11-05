@@ -11,6 +11,5 @@
         public string County { get; set; }
         public string Country { get; set; }
 
-        public ICollection<Use> Uses { get; set; } = new List<Use>();
     }
 }

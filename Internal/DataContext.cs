@@ -20,63 +20,99 @@ namespace ExtractInfoIdentityDocument.Internal
         {
             base.OnModelCreating(modelBuilder);
 
+            // === User ===
             modelBuilder.Entity<User>(entity =>
             {
                 entity.HasKey(u => u.Id);
 
-                entity.HasOne(u => u.Subscription)
-                    .WithMany(s => s.Users)
-                    .HasForeignKey(u => u.SubscriptionId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(u => u.FirstName)
+                    .HasMaxLength(100);
 
-                entity.HasOne(u => u.Role)
-                    .WithMany(r => r.Users)
-                    .HasForeignKey(u => u.RoleId)
-                    .OnDelete(DeleteBehavior.Restrict);
+                entity.Property(u => u.LastName)
+                    .HasMaxLength(100);
+
+                entity.Property(u => u.Email)
+                    .HasMaxLength(255);
 
                 entity.HasIndex(u => u.Email).IsUnique();
                 entity.HasIndex(u => u.Cui);
                 entity.HasIndex(u => u.SubscriptionId);
                 entity.HasIndex(u => u.RoleId);
+
+                // Relații fără inverse
+                entity.HasOne(u => u.Subscription)
+                    .WithMany() // fără colecție inversă
+                    .HasForeignKey(u => u.SubscriptionId)
+                    .OnDelete(DeleteBehavior.Restrict);
+
+                entity.HasOne(u => u.Role)
+                    .WithMany() // fără colecție inversă
+                    .HasForeignKey(u => u.RoleId)
+                    .OnDelete(DeleteBehavior.Restrict);
             });
 
+            // === Use ===
             modelBuilder.Entity<Use>(entity =>
             {
                 entity.HasKey(u => u.Id);
 
-                entity.HasOne(u => u.User)
-                    .WithMany(u => u.Uses)
-                    .HasForeignKey(u => u.UserId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(u => u.CreatedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
 
-                entity.HasOne(u => u.IdentityCard)
-                    .WithMany(i => i.Uses)
-                    .HasForeignKey(u => u.IdentityCardId)
-                    .OnDelete(DeleteBehavior.Cascade);
+                entity.Property(u => u.ModifiedAt)
+                    .HasDefaultValueSql("GETUTCDATE()");
 
                 entity.HasIndex(u => u.UserId);
                 entity.HasIndex(u => u.IdentityCardId);
                 entity.HasIndex(u => u.CreatedAt);
+
+                entity.HasOne(u => u.User)
+                    .WithMany() // fără colecție inversă
+                    .HasForeignKey(u => u.UserId)
+                    .OnDelete(DeleteBehavior.Cascade);
+
+                entity.HasOne(u => u.IdentityCard)
+                    .WithMany() // fără colecție inversă
+                    .HasForeignKey(u => u.IdentityCardId)
+                    .OnDelete(DeleteBehavior.Cascade);
             });
 
+            // === Subscription ===
             modelBuilder.Entity<Subscription>(entity =>
             {
                 entity.HasKey(s => s.Id);
+
+                entity.Property(s => s.Name)
+                    .HasMaxLength(100);
+
+                entity.Property(s => s.Price)
+                    .HasPrecision(10, 2);
 
                 entity.HasIndex(s => s.Name).IsUnique();
                 entity.HasIndex(s => s.Price);
             });
 
+            // === Role ===
             modelBuilder.Entity<Role>(entity =>
             {
                 entity.HasKey(r => r.Id);
 
+                entity.Property(r => r.Name)
+                    .HasMaxLength(100);
+
                 entity.HasIndex(r => r.Name).IsUnique();
             });
 
+            // === IdentityCard ===
             modelBuilder.Entity<IdentityCard>(entity =>
             {
                 entity.HasKey(i => i.Id);
+
+                entity.Property(i => i.Cnp)
+                    .HasMaxLength(13);
+
+                entity.Property(i => i.Series)
+                    .HasMaxLength(20);
 
                 entity.HasIndex(i => i.Cnp).IsUnique();
                 entity.HasIndex(i => i.Series);

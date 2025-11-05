@@ -1,4 +1,5 @@
 using ExtractInfoIdentityDocument.Models;
+using ExtractInfoIdentityDocument.Services.Interface;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,47 +8,70 @@ using Microsoft.AspNetCore.Mvc;
 public class RoleController : ControllerBase
 {
     private readonly ILogger<RoleController> _logger;
+    private readonly IRoleService _roleService;
 
-    public RoleController(ILogger<RoleController> logger)
+    public RoleController(
+        ILogger<RoleController> logger,
+        IRoleService roleService
+        )
     {
         _logger = logger;
+        _roleService = roleService;
     }
 
     // GET /Role
+    [Route("[action]")]
     [HttpGet]
-    public Task<IActionResult> GetAllRoles()
+    public async Task<IActionResult> GetAllRoles()
     {
-        return null;
+        List<Role> roles = await _roleService.GetAllRoles();
+
+        return Ok(roles);
     }
 
     // GET /Role/{id}
-    [HttpGet("{id:guid}")]
-    public Task<IActionResult> GetRoleById(Guid id)
-    {
-        return null;
-    }
-
-    [HttpPost]
-    public Task<IActionResult> AddRole([FromBody] Role role)
-    {
-        return null;
-    }
-
-    [HttpPut("{id:guid}")]
-    public Task<IActionResult> EditRole(Guid id)
-    {
-        return null;
-    }
-
-    [HttpDelete("{id:guid}")]
-    public Task<IActionResult> DeleteRole(Guid id)
-    {
-        return null;
-    }
-
+    [Route("[action]")]
     [HttpDelete]
-    public Task<IActionResult> DeleteAllRole()
+    public async Task<IActionResult> GetRoleById(string roleId)
     {
-        return null;
+        Role role = await _roleService.GetRoleById(roleId);
+
+        return Ok(role);
+    }
+
+    [Route("[action]")]
+    [HttpPost]
+    public async Task<IActionResult> AddRole([FromBody] string roleName)
+    {
+        await _roleService.AddRole(roleName);
+
+        return Ok();
+    }
+
+    [Route("[action]")]
+    [HttpPut]
+    public async Task<IActionResult> EditRole(string roleId, [FromBody] string newName)
+    {
+        await _roleService.EditRole(roleId, newName);
+
+        return Ok();
+    }
+
+    [Route("[action]")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteRole(string id)
+    {
+        await _roleService.DeleteRoleById(id);
+
+        return Ok();
+    }
+
+    [Route("[action]")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAllRole()
+    {
+        await _roleService.DeleteAllRoles();
+
+        return Ok();
     }
 }

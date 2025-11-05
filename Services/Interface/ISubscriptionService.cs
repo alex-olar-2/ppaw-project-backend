@@ -1,0 +1,6 @@
+﻿namespace ExtractInfoIdentityDocument.Services.Interface
+{
+    public interface ISubscriptionService
+    {
+    }
+}
