@@ -1,23 +1,14 @@
-﻿using Data.SDK.Repository;
-
-using ExtractInfoIdentityDocument.Internal.Interface;
+﻿using Data.SDK;
+using Data.SDK.Repository;
 
 namespace ExtractInfoIdentityDocument.Internal
 {
-    public class DataRepository<T> : BaseRepository<T, DataContext>, IDataRepository<T> where T : class
+    public class Repository<T> : BaseRepository<T, DataContext> where T : class
     {
-        private readonly DataContext _dataContext;
-
-        public DataRepository(DataContext dataContext)
-            : base(dataContext)
+        public Repository(DataContext applicationDbContext)
+            : base(applicationDbContext)
         {
-            _dataContext = dataContext;
-        }
 
-        public async Task<int> InsertSqlAsync(string sql)
-        {
-            return await _dataContext.ExecuteSqlRawAsync(sql, 5000);
         }
-
     }
 }

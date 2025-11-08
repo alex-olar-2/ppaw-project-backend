@@ -4,7 +4,6 @@ using Data.SDK.Repository;
 using Data.SDK.Repository.Interface;
 
 using ExtractInfoIdentityDocument.Internal;
-using ExtractInfoIdentityDocument.Internal.Interface;
 using ExtractInfoIdentityDocument.Services;
 using ExtractInfoIdentityDocument.Services.Interface;
 
@@ -35,10 +34,6 @@ namespace ExtractInfoIdentityDocument
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
-
-            services.AddScoped<IRoleService, RoleService>();
-
             services.AddControllers()
             .AddNewtonsoftJson(options =>
             {
@@ -91,16 +86,13 @@ namespace ExtractInfoIdentityDocument
                 context.LogTo(Console.WriteLine);
             });
 
-            services.AddDbContext<ApplicationDbContext>(options =>
-            {
-                options.UseSqlServer(Configuration.GetConnectionString("Default"));
-            });
-
 
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
-            services.AddScoped(typeof(IDataRepository<>), typeof(DataRepository<>));
+            services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
+
+            services.AddScoped<IRoleService, RoleService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

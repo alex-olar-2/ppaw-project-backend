@@ -31,7 +31,7 @@ public class RoleController : ControllerBase
 
     // GET /Role/{id}
     [Route("[action]")]
-    [HttpDelete]
+    [HttpGet]
     public async Task<IActionResult> GetRoleById(string roleId)
     {
         Role role = await _roleService.GetRoleById(roleId);
@@ -59,7 +59,7 @@ public class RoleController : ControllerBase
 
     [Route("[action]")]
     [HttpDelete]
-    public async Task<IActionResult> DeleteRole(string id)
+    public async Task<IActionResult> DeleteRoleById(string id)
     {
         await _roleService.DeleteRoleById(id);
 
