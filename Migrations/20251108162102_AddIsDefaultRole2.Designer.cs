@@ -4,6 +4,7 @@ using ExtractInfoIdentityDocument.Internal;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ExtractInfoIdentityDocument.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20251108162102_AddIsDefaultRole2")]
+    partial class AddIsDefaultRole2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -112,11 +115,6 @@ namespace ExtractInfoIdentityDocument.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<bool>("IsDefault")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bit")
-                        .HasDefaultValue(false);
-
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -128,14 +126,8 @@ namespace ExtractInfoIdentityDocument.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("IsDefault")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Subscription_IsDefault_True")
-                        .HasFilter("[IsDefault] = 1");
-
                     b.HasIndex("Name")
-                        .IsUnique()
-                        .HasDatabaseName("IX_Subscription_Name");
+                        .IsUnique();
 
                     b.HasIndex("Price");
 
@@ -193,9 +185,15 @@ namespace ExtractInfoIdentityDocument.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("nvarchar(255)");
 
-                    b.Property<string>("Password")
+                    b.Property<string>("FirstName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<string>("LastName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.Property<Guid>("RoleId")
                         .HasColumnType("uniqueidentifier");

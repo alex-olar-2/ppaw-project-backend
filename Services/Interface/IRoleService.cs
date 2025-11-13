@@ -6,11 +6,15 @@ namespace ExtractInfoIdentityDocument.Services.Interface
     {
         Task<Role> GetRoleById(string roleId);
 
+        Task<Role> GetDefaultRole();
+
         Task<List<Role>> GetAllRoles();
 
-        Task AddRole(string roleName);
+        Task AddRole(string roleName, bool isDefault);
+        
+        Task AddRole(Role role);
 
-        Task EditRole(string roleId, string roleName);
+        Task EditRole(string roleId, string roleName, bool isDefault);
 
         Task DeleteRoleById(string roleId);
 

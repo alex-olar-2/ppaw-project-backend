@@ -25,11 +25,8 @@ namespace ExtractInfoIdentityDocument.Internal
             {
                 entity.HasKey(u => u.Id);
 
-                entity.Property(u => u.FirstName)
-                    .HasMaxLength(100);
-
-                entity.Property(u => u.LastName)
-                    .HasMaxLength(100);
+                entity.Property(u => u.Email)
+                    .HasMaxLength(255);
 
                 entity.Property(u => u.Email)
                     .HasMaxLength(255);
@@ -89,19 +86,48 @@ namespace ExtractInfoIdentityDocument.Internal
                     .HasPrecision(10, 2);
 
                 entity.HasIndex(s => s.Name).IsUnique();
+
                 entity.HasIndex(s => s.Price);
+
+                entity.HasIndex(s => s.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Subscription_Name");
+
+                entity.Property(s => s.IsDefault)
+                    .HasDefaultValue(false);
+
+                // 👇 Filtrare: doar un singur rând poate avea IsDefault = true
+                entity.HasIndex(s => s.IsDefault)
+                    .IsUnique()
+                    .HasFilter("[IsDefault] = 1")
+                    .HasDatabaseName("IX_Subscription_IsDefault_True");
             });
 
             // === Role ===
             modelBuilder.Entity<Role>(entity =>
             {
+                entity.ToTable("Roles");
+
                 entity.HasKey(r => r.Id);
 
                 entity.Property(r => r.Name)
+                    .IsRequired()
                     .HasMaxLength(100);
 
-                entity.HasIndex(r => r.Name).IsUnique();
+                entity.HasIndex(r => r.Name)
+                    .IsUnique()
+                    .HasDatabaseName("IX_Role_Name");
+
+                entity.Property(r => r.IsDefault)
+                    .HasDefaultValue(false);
+
+                // 👇 Filtrare: doar un singur rând poate avea IsDefault = true
+                entity.HasIndex(r => r.IsDefault)
+                    .IsUnique()
+                    .HasFilter("[IsDefault] = 1")
+                    .HasDatabaseName("IX_Role_IsDefault_True");
             });
+
 
             // === IdentityCard ===
             modelBuilder.Entity<IdentityCard>(entity =>

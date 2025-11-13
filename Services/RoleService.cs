@@ -30,11 +30,25 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
+        public async Task<Role> GetDefaultRole()
+        {
+            try
+            {
+                Role role = await _roleRepository.GetIncludeThenAsync(x => x.IsDefault == true, false, null);
+
+                return role;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<List<Role>> GetAllRoles()
         {
             try
             {
-                var roles = await _roleRepository.GetAllAsync();
+                IList<Role> roles = await _roleRepository.GetAllAsync();
 
                 return roles.ToList();
             }
@@ -44,11 +58,11 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddRole(string roleName)
+        public async Task AddRole(string roleName, bool isDefault)
         {
             try
             {
-                var role = new Role { Name = roleName };
+                Role role = new Role { Name = roleName, IsDefault = isDefault };
 
                 await _roleRepository.InsertAsync(role);
             }
@@ -57,16 +71,32 @@ namespace ExtractInfoIdentityDocument.Services
                 throw ex;
             }
         }
-
-        public async Task EditRole(string roleId, string roleName)
+        
+        public async Task AddRole(Role role)
         {
             try
             {
-                var role = await GetRoleById(roleId);
+                await _roleRepository.InsertAsync(role);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
-                role.Name = roleName;
+        public async Task EditRole(string roleId, string roleName, bool isDefault)
+        {
+            try
+            {
+                if (!string.IsNullOrEmpty(roleId))
+                {
+                    Role role = await GetRoleById(roleId);
 
-                await _roleRepository.UpdateAsync(role);
+                    role.Name = !string.IsNullOrEmpty(roleName) ? roleName : String.Empty;
+                    role.IsDefault = isDefault != null ? isDefault : false;
+
+                    await _roleRepository.UpdateAsync(role);
+                }
             }
             catch (Exception ex)
             {
@@ -78,7 +108,7 @@ namespace ExtractInfoIdentityDocument.Services
         {
             try
             {
-                var role = await GetRoleById(roleId);
+                Role role = await GetRoleById(roleId);
 
                 await _roleRepository.DeleteAsync(role);
             }
@@ -90,9 +120,16 @@ namespace ExtractInfoIdentityDocument.Services
 
         public async Task DeleteAllRoles()
         {
-            IList<Role> roles = await _roleRepository.GetAllAsync();
+            try
+            {
+                IList<Role> roles = await _roleRepository.GetAllAsync();
 
-            await _roleRepository.DeleteAsync(roles);
+                await _roleRepository.DeleteAsync(roles);
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

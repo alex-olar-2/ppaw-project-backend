@@ -1,4 +1,5 @@
 using ExtractInfoIdentityDocument.Models;
+using ExtractInfoIdentityDocument.Services.Interface;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,47 +8,79 @@ using Microsoft.AspNetCore.Mvc;
 public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
+    private readonly IUserService _userService;
 
-    public UserController(ILogger<UserController> logger)
+    public UserController(
+        ILogger<UserController> logger,
+        IUserService userService
+        )
     {
         _logger = logger;
+        _userService = userService;
     }
 
     // GET /User
+    [Route("[action]")]
     [HttpGet]
-    public Task<IActionResult> GetAllUsers()
+    public async Task<IActionResult> GetAllUsers()
     {
-        return null;
+        List<User> Users = await _userService.GetAllUsers();
+
+        return Ok(Users);
     }
 
     // GET /User/{id}
-    [HttpGet("{id:guid}")]
-    public Task<IActionResult> GetUserById(Guid id)
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> GetUserById(string UserId)
     {
-        return null;
+        User User = await _userService.GetUserById(UserId);
+
+        return Ok(User);
     }
 
+    [Route("[action]")]
     [HttpPost]
-    public Task<IActionResult> AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser([FromBody] User user)
     {
-        return null;
+        await _userService.AddUser(user);
+
+        return Ok();
     }
 
-    [HttpPut("{id:guid}")]
-    public Task<IActionResult> EditUser(Guid id)
+    [Route("[action]")]
+    [HttpPut]
+    public async Task<IActionResult> EditUser(string userId, [FromBody] User user)
     {
-        return null;
+        await _userService.EditUser(user);
+
+        return Ok();
     }
 
-    [HttpDelete("{id:guid}")]
-    public Task<IActionResult> DeleteUser(Guid id)
-    {
-        return null;
-    }
-
+    [Route("[action]")]
     [HttpDelete]
-    public Task<IActionResult> DeleteAllUser()
+    public async Task<IActionResult> DeleteUserById(string id)
     {
-        return null;
+        await _userService.DeleteUserById(id);
+
+        return Ok();
+    }
+
+    [Route("[action]")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteUser([FromBody] User user)
+    {
+        await _userService.DeleteUser(user);
+
+        return Ok();
+    }
+
+    [Route("[action]")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteAllUser()
+    {
+        await _userService.DeleteAllUsers();
+
+        return Ok();
     }
 }

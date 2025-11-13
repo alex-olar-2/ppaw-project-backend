@@ -93,6 +93,10 @@ namespace ExtractInfoIdentityDocument
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IRoleService, RoleService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IUseService, UseService>();
+            services.AddScoped<ISubscriptionService, SubscriptionService>();
+            services.AddScoped<IIdentityCardService, IdentityCardService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

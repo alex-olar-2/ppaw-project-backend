@@ -1,4 +1,5 @@
 using ExtractInfoIdentityDocument.Models;
+using ExtractInfoIdentityDocument.Services.Interface;
 
 using Microsoft.AspNetCore.Mvc;
 
@@ -7,47 +8,80 @@ using Microsoft.AspNetCore.Mvc;
 public class SubscriptionController : ControllerBase
 {
     private readonly ILogger<SubscriptionController> _logger;
+    private readonly ISubscriptionService _subscriptionService;
 
-    public SubscriptionController(ILogger<SubscriptionController> logger)
+    public SubscriptionController(
+        ILogger<SubscriptionController> logger,
+        ISubscriptionService subscriptionService
+        )
     {
         _logger = logger;
+        _subscriptionService = subscriptionService;
     }
 
     // GET /Subscription
+    [Route("[action]")]
     [HttpGet]
-    public Task<IActionResult> GetAllSubscriptions()
+    public async Task<IActionResult> GetAllSubscriptions()
     {
-        return null;
+        List<Subscription> subscriptions = await _subscriptionService.GetAllSubscriptions();
+
+        return Ok(subscriptions);
+    }
+
+    // GET /Subscription
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> GetDefaultSubscription()
+    {
+        Subscription subscription = await _subscriptionService.GetDefaultSubscription();
+
+        return Ok(subscription);
     }
 
     // GET /Subscription/{id}
-    [HttpGet("{id:guid}")]
-    public Task<IActionResult> GetSubscriptionById(Guid id)
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> GetSubscriptionById(string id)
     {
-        return null;
+        Subscription subscription = await _subscriptionService.GetSubscriptionById(id);
+
+        return Ok(subscription);
     }
 
     [HttpPost]
-    public Task<IActionResult> AddSubscription([FromBody] Subscription subscription)
+    [Route("[action]")]
+    public async Task<IActionResult> AddSubscription(string subscriptionName, decimal price, bool isDefault)
     {
-        return null;
+        await _subscriptionService.AddSubscription(subscriptionName, price, isDefault);
+
+        return Ok();
     }
 
-    [HttpPut("{id:guid}")]
-    public Task<IActionResult> EditSubscription(Guid id)
+    [HttpPut]
+    [Route("[action]")]
+    public async Task<IActionResult> EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault)
     {
-        return null;
-    }
+        await _subscriptionService.EditSubscription(subscriptionId, subscriptionName, price, isDefault);
 
-    [HttpDelete("{id:guid}")]
-    public Task<IActionResult> DeleteSubscription(Guid id)
-    {
-        return null;
+        return Ok();
     }
 
     [HttpDelete]
-    public Task<IActionResult> DeleteAllSubscription()
+    [Route("[action]")]
+    public async Task<IActionResult> DeleteSubscriptionById(string subscriptionId)
     {
-        return null;
+        await _subscriptionService.DeleteSubscriptionById(subscriptionId);
+
+        return Ok();
+    }
+
+    [HttpDelete]
+    [Route("[action]")]
+    public async Task<IActionResult> DeleteAllSubscription()
+    {
+        await _subscriptionService.DeleteAllSubscriptions();
+
+        return Ok();
     }
 }

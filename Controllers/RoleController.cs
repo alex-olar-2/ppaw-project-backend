@@ -40,19 +40,28 @@ public class RoleController : ControllerBase
     }
 
     [Route("[action]")]
-    [HttpPost]
-    public async Task<IActionResult> AddRole([FromBody] string roleName)
+    [HttpGet]
+    public async Task<IActionResult> GetDefaultRole()
     {
-        await _roleService.AddRole(roleName);
+        Role role = await _roleService.GetDefaultRole();
+
+        return Ok(role);
+    }
+
+    [Route("[action]")]
+    [HttpPost]
+    public async Task<IActionResult> AddRole(string roleName, bool isDefault)
+    {
+        await _roleService.AddRole(roleName, isDefault);
 
         return Ok();
     }
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditRole(string roleId, [FromBody] string newName)
+    public async Task<IActionResult> EditRole(string roleId, string newName, bool isDefault)
     {
-        await _roleService.EditRole(roleId, newName);
+        await _roleService.EditRole(roleId, newName, isDefault);
 
         return Ok();
     }
