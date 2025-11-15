@@ -32,7 +32,7 @@ public class UserController : ControllerBase
     // GET /User/{id}
     [Route("[action]")]
     [HttpGet]
-    public async Task<IActionResult> GetUserById(string UserId)
+    public async Task<IActionResult> GetUserById(string userId)
     {
         User User = await _userService.GetUserById(UserId);
 
@@ -41,18 +41,18 @@ public class UserController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
-    public async Task<IActionResult> AddUser([FromBody] User user)
+    public async Task<IActionResult> AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
     {
-        await _userService.AddUser(user);
+        await _userService.AddUser(email, password, cui, subscriptionId, roleId);
 
         return Ok();
     }
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditUser(string userId, [FromBody] User user)
+    public async Task<IActionResult> EditUser(string userId, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
     {
-        await _userService.EditUser(user);
+        await _userService.EditUser(userId, email, password, cui, subscriptionId, roleId);
 
         return Ok();
     }
@@ -62,15 +62,6 @@ public class UserController : ControllerBase
     public async Task<IActionResult> DeleteUserById(string id)
     {
         await _userService.DeleteUserById(id);
-
-        return Ok();
-    }
-
-    [Route("[action]")]
-    [HttpDelete]
-    public async Task<IActionResult> DeleteUser([FromBody] User user)
-    {
-        await _userService.DeleteUser(user);
 
         return Ok();
     }

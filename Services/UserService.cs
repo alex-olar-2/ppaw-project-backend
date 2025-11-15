@@ -15,13 +15,17 @@ namespace ExtractInfoIdentityDocument.Services
 
         private readonly IRoleService _roleService;
 
+        private readonly ISubscriptionService _subscriptionService;
+
         public UserService(
             IRepository<User> userRepository,
-            IRoleService roleService
+            IRoleService roleService,
+            ISubscriptionService subscriptionService
             )
         {
             _userRepository = userRepository;
             _roleService = roleService;
+            _subscriptionService = subscriptionService;
         }
 
         public async Task<User> GetUserById(string UserId)
@@ -74,7 +78,7 @@ namespace ExtractInfoIdentityDocument.Services
                     Password = !string.IsNullOrEmpty(password) ? password : String.Empty,
                     Cui = !string.IsNullOrEmpty(cui) ? cui : String.Empty,
                     RoleId = !string.IsNullOrEmpty(roleId) ? Guid.Parse(roleId) : (await _roleService.GetDefaultRole()).Id,
-                    SubscriptionId = !string.IsNullOrEmpty(subscriptionId) ? Guid.Parse(subscriptionId) : Guid.NewGuid() // de modificat
+                    SubscriptionId = !string.IsNullOrEmpty(subscriptionId) ? Guid.Parse(subscriptionId) : (await _subscriptionService.GetDefaultSubscription()).Id // de modificat
                 };
 
                 await _userRepository.InsertAsync(user);
