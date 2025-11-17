@@ -90,6 +90,8 @@ namespace ExtractInfoIdentityDocument
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
+            services.AddControllersWithViews();
+
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
             services.AddScoped<IRoleService, RoleService>();
