@@ -34,7 +34,7 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> GetUserById(string userId)
     {
-        User User = await _userService.GetUserById(UserId);
+        User User = await _userService.GetUserById(userId);
 
         return Ok(User);
     }

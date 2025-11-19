@@ -1,0 +1,45 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Carti de identitate";
+}
+
+<h1>Lista Cartilor De Identitate</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>CNP</th>
+            <th>Serie</th>
+            <th>Prenume</th>
+            <th>Nume</th>
+            <th>Adresa</th>
+            <th>Oras</th>
+            <th>Judet</th>
+            <th>Tara</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var identityCard in Model)
+        {
+            <tr>
+                <td>@identityCard.Id</td>
+                <td>@identityCard.Cnp</td>
+                <td>@identityCard.Series</td>
+                <td>@identityCard.FirstName</td>
+                <td>@identityCard.LastName</td>
+                <td>@identityCard.Address</td>
+                <td>@identityCard.City</td>
+                <td>@identityCard.County</td>
+                <td>@identityCard.Country</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Aici va fi tabelul cu utilizatori -->
+<!-- Buton pentru a te întoarce la Index -->
+<a href="/Admin/Index">Înapoi la Panou Admin</a>

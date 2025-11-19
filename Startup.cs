@@ -90,7 +90,7 @@ namespace ExtractInfoIdentityDocument
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
-            services.AddControllersWithViews();
+            services.AddControllersWithViews(); // MVC
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
@@ -112,7 +112,7 @@ namespace ExtractInfoIdentityDocument
                 c.RoutePrefix = "";
             });
             var option = new RewriteOptions();
-            option.AddRedirect("^$", "swagger");
+            option.AddRedirect("^$", "index.html");
             app.UseRewriter(option);
             app.UseHttpsRedirection();
 
@@ -122,6 +122,11 @@ namespace ExtractInfoIdentityDocument
 
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapControllerRoute(
+                    name: "admin",
+                    pattern: "{controller=Admin}/{action=Index}/{id?}"
+                );
+
                 endpoints.MapControllers();
             });
         }

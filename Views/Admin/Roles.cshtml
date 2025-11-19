@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@model List<ExtractInfoIdentityDocument.Models.Role>
+
+@{
+    ViewData["Title"] = "Roluri";
+}
+
+<h1>Lista Rolurilor</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nume Rol</th>
+            <th>Implicit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var role in Model)
+        {
+            <tr>
+                <td>@role.Id</td>
+                <td>@role.Name</td>
+                <td>@(role.IsDefault ? "Da" : "Nu")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a href="/Admin/Index">Înapoi la Panou Admin</a>

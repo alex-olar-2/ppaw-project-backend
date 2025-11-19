@@ -1,0 +1,35 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
+    ViewData["Title"] = "Abonamente";
+}
+
+<h1>Lista Abonamentelor</h1>
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Nume Abonament</th>
+            <th>Pret</th>
+            <th>Implicit</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var subscription in Model)
+        {
+            <tr>
+                <td>@subscription.Id</td>
+                <td>@subscription.Name</td>
+                <td>@subscription.Price</td>
+                <td>@(subscription.IsDefault ? "Da" : "Nu")</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- Aici va fi tabelul cu utilizatori -->
+<!-- Buton pentru a te întoarce la Index -->
+<a href="/Admin/Index">Înapoi la Panou Admin</a>
