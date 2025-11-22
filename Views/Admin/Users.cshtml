@@ -1,9 +1,35 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@{
     ViewData["Title"] = "Utilizatori";
 }
 
-<h2>Toți utilizatorii</h2>
+<h1>Lista Utilizatorilor</h1>
 
-<!-- Aici va fi tabelul cu utilizatori -->
-<!-- Buton pentru a te întoarce la Index -->
-<a href="/Admin/Index">Înapoi la Panou Admin</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Email</th>
+            <th>Parola</th>
+            <th>CUI</th>
+            <th>Id Abonament</th>
+            <th>Id Rol</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Id</td>
+                <td>@user.Email</td>
+                <td>@user.Password</td>
+                <td>@user.Cui</td>
+                <td>@user.userId</td>
+                <td>@user.RoleId</td>
+            </tr>
+        }
+    </tbody>
+</table>

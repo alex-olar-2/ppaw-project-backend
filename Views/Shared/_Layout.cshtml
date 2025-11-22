@@ -1,24 +1,42 @@
-﻿@* Layout MVC, fără @page și fără PageModel *@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="ro">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - Admin Panel</title>
 
-    <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
+        html, body {
+            height: 100%;
+            margin: 0;
+        }
+
         body {
-            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+        }
+
+        main {
+            flex-grow: 1;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .container-fluid-content {
+            padding-top: 70px;
         }
     </style>
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-4">
-            <a class="navbar-brand" href="@Url.Action("Index", "Admin")">Panou Admin</a>
+
+    <header class="sticky-top">
+        <nav class="navbar navbar-expand-lg navbar-light bg-light mb-0 border-bottom shadow-sm">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="/Admin/Index">Panou Admin</a>
+            </div>
         </nav>
     </header>
 
@@ -26,12 +44,13 @@
         @RenderBody()
     </main>
 
-    <footer class="text-center mt-4">
-        <hr />
-        <p>&copy; 2025 - Admin Panel</p>
+    <footer class="text-center w-100 bg-light py-3 border-top mt-auto">
+        <div class="container-fluid">
+            <p class="mb-0">&copy; @DateTime.Now.Year - Admin Panel</p>
+        </div>
     </footer>
 
-    <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

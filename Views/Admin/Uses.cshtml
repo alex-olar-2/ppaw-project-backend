@@ -1,9 +1,36 @@
 ﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@{
     ViewData["Title"] = "Utilizari";
 }
 
-<h2>Toate utilizarile</h2>
+<h1>Lista Utilizarilor</h1>
 
-<!-- Aici va fi tabelul cu utilizatori -->
-<!-- Buton pentru a te întoarce la Index -->
-<a href="/Admin/Index">Înapoi la Panou Admin</a>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Id Utilizator</th>
+            <th>Id Carte De Identitate</th>
+            <th>Creat</th>
+            <th>Modificat</th>
+            <th>Succes</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var use in Model)
+        {
+            <tr>
+                <td>@use.Id</td>
+                <td>@use.UserId</td>
+                <td>@use.IdentityCardId</td>
+                <td>@use.CreatedAt</td>
+                <td>@use.ModifiedAt</td>
+                <td>@(use.IsSucceeded ? "Da" : "Nu")</td>
+            </tr>
+        }
+    </tbody>
+</table>
