@@ -64,7 +64,7 @@ namespace ExtractInfoIdentityDocument.Services
         {
             try
             {
-                Subscription subscription = new Subscription { Name = subscriptionName, Price = price, IsDefault = isDefault };
+                Subscription subscription = new Subscription { Name = subscriptionName, Price = price, IsDefault = isDefault, IsVisible = isVisible };
 
                 await _subscriptionRepository.InsertAsync(subscription);
             }
@@ -97,6 +97,7 @@ namespace ExtractInfoIdentityDocument.Services
                     subscription.Name = !string.IsNullOrEmpty(subscriptionName) ? subscriptionName : String.Empty;
                     subscription.Price = price > 0 ? price : subscription.Price;
                     subscription.IsDefault = isDefault != null ? isDefault : false;
+                    subscription.IsDefault = isVisible;
 
                     await _subscriptionRepository.UpdateAsync(subscription);
                 }

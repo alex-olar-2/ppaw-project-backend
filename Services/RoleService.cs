@@ -62,7 +62,7 @@ namespace ExtractInfoIdentityDocument.Services
         {
             try
             {
-                Role role = new Role { Name = roleName, IsDefault = isDefault };
+                Role role = new Role { Name = roleName, IsDefault = isDefault, IsVisible = isVisible };
 
                 await _roleRepository.InsertAsync(role);
             }
@@ -94,6 +94,7 @@ namespace ExtractInfoIdentityDocument.Services
 
                     role.Name = !string.IsNullOrEmpty(roleName) ? roleName : String.Empty;
                     role.IsDefault = isDefault != null ? isDefault : false;
+                    role.IsVisible = isVisible;
 
                     await _roleRepository.UpdateAsync(role);
                 }

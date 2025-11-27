@@ -85,6 +85,7 @@ namespace ExtractInfoIdentityDocument.Services
                     ModifiedAt = DateTime.Now,
                     UserId = !string.IsNullOrEmpty(userId) ? Guid.Parse(userId) : Guid.NewGuid(),
                     IdentityCardId = !string.IsNullOrEmpty(identityCardId) ? Guid.Parse(identityCardId) : Guid.NewGuid(),
+                    IsVisible = isVisible
                 };
 
                 await _useRepository.InsertAsync(use);
@@ -119,6 +120,7 @@ namespace ExtractInfoIdentityDocument.Services
                     use.IsSucceeded = isSucceeded != use.IsSucceeded ? isSucceeded : use.IsSucceeded;
                     use.UserId = !string.IsNullOrEmpty(useId) ? Guid.Parse(userId) : use.UserId;
                     use.IdentityCardId = !string.IsNullOrEmpty(identityCardId) ? Guid.Parse(identityCardId) : use.IdentityCardId;
+                    use.IsVisible = isVisible;
                 }
             }
             catch (Exception ex)

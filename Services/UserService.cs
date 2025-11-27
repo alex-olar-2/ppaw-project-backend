@@ -78,7 +78,8 @@ namespace ExtractInfoIdentityDocument.Services
                     Password = !string.IsNullOrEmpty(password) ? password : String.Empty,
                     Cui = !string.IsNullOrEmpty(cui) ? cui : String.Empty,
                     RoleId = !string.IsNullOrEmpty(roleId) ? Guid.Parse(roleId) : (await _roleService.GetDefaultRole()).Id,
-                    SubscriptionId = !string.IsNullOrEmpty(subscriptionId) ? Guid.Parse(subscriptionId) : (await _subscriptionService.GetDefaultSubscription()).Id // de modificat
+                    SubscriptionId = !string.IsNullOrEmpty(subscriptionId) ? Guid.Parse(subscriptionId) : (await _subscriptionService.GetDefaultSubscription()).Id, // de modificat
+                    IsVisible = isVisible
                 };
 
                 await _userRepository.InsertAsync(user);
@@ -142,6 +143,8 @@ namespace ExtractInfoIdentityDocument.Services
 
                         // De completat cu subscription
                     }
+
+                    user.IsVisible = isVisible;
 
                     await _userRepository.UpdateOnlyModifiedFieldsAsync(user);
                 }

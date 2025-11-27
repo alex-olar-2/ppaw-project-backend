@@ -71,7 +71,8 @@ namespace ExtractInfoIdentityDocument.Services
                     Address = !string.IsNullOrEmpty(address) ? address : String.Empty,
                     City = !string.IsNullOrEmpty(city) ? city : String.Empty,
                     County = !string.IsNullOrEmpty(city) ? county : String.Empty,
-                    Country = !string.IsNullOrEmpty(country) ? country : String.Empty
+                    Country = !string.IsNullOrEmpty(country) ? country : String.Empty,
+                    IsVisible = isVisible
                 };
 
                 await _identityCardRepository.InsertAsync(identityCard);
@@ -109,6 +110,7 @@ namespace ExtractInfoIdentityDocument.Services
                     identityCard.Address = !string.IsNullOrEmpty(address) ? address : identityCard.Address;
                     identityCard.County = !string.IsNullOrEmpty(county) ? county : identityCard.County;
                     identityCard.Country = !string.IsNullOrEmpty(country) ? country : identityCard.Country;
+                    identityCard.IsVisible = isVisible;
 
                     await _identityCardRepository.UpdateAsync(identityCard);
                 }
