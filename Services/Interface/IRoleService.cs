@@ -10,11 +10,11 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task<List<Role>> GetAllRoles();
 
-        Task AddRole(string roleName, bool isDefault);
+        Task AddRole(string roleName, bool isDefault, bool isVisible = true);
         
         Task AddRole(Role role);
 
-        Task EditRole(string roleId, string roleName, bool isDefault);
+        Task EditRole(string roleId, string roleName, bool isDefault, bool isVisible = true);
 
         Task DeleteRoleById(string roleId);
 

@@ -58,7 +58,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddRole(string roleName, bool isDefault)
+        public async Task AddRole(string roleName, bool isDefault, bool isVisible = true)
         {
             try
             {
@@ -84,7 +84,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task EditRole(string roleId, string roleName, bool isDefault)
+        public async Task EditRole(string roleId, string roleName, bool isDefault, bool isVisible = true)
         {
             try
             {

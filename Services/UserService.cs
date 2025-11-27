@@ -68,7 +68,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
+        public async Task AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true)
         {
             try
             {
@@ -101,7 +101,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task EditUser(string userId = null, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
+        public async Task EditUser(string userId = null, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true)
         {
             try
             {

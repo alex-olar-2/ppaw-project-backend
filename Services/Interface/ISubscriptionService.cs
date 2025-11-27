@@ -10,11 +10,11 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task<List<Subscription>> GetAllSubscriptions();
 
-        Task AddSubscription(string subscriptionName, decimal price, bool isDefault);
+        Task AddSubscription(string subscriptionName, decimal price, bool isDefault, bool isVisible = true);
 
         Task AddSubscription(Subscription subscription);
 
-        Task EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault);
+        Task EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault, bool isVisible = true);
 
         Task DeleteSubscriptionById(string subscriptionId);
 

@@ -12,11 +12,11 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task<List<Use>> GetAllUses();
 
-        Task AddUse(bool isSucceeded, string userId = null, string identityCardId = null);
+        Task AddUse(bool isSucceeded, string userId = null, string identityCardId = null, bool isVisible = true);
 
         Task AddUse(Use Use);
 
-        Task EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null);
+        Task EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null, bool isVisible = true);
 
         Task DeleteUseById(string useId);
 

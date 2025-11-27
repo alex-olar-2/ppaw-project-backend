@@ -10,11 +10,11 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task<List<IdentityCard>> GetAllIdentityCards();
 
-        Task AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null);
+        Task AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true);
 
         Task AddIdentityCard(IdentityCard identityCard);
 
-        Task EditIdentityCard(string identityCardId, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null);
+        Task EditIdentityCard(string identityCardId, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true);
 
         Task DeleteIdentityCardById(string identityCardId);
 

@@ -74,7 +74,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddUse(bool isSucceeded, string userId = null, string identityCardId = null)
+        public async Task AddUse(bool isSucceeded, string userId = null, string identityCardId = null, bool isVisible = true)
         {
             try
             {
@@ -107,7 +107,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null)
+        public async Task EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null, bool isVisible = true)
         {
             try
             {

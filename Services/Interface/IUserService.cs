@@ -10,11 +10,11 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task AddUser(User user);
 
-        Task AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null);
+        Task AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true);
 
         Task EditUser(User user);
 
-        Task EditUser(string userId = null, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null);
+        Task EditUser(string userId = null, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true);
 
         Task DeleteUser(User user);
 

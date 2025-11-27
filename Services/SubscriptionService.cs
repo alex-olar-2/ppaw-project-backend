@@ -60,7 +60,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddSubscription(string subscriptionName, decimal price, bool isDefault)
+        public async Task AddSubscription(string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
         {
             try
             {
@@ -86,7 +86,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault)
+        public async Task EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
         {
             try
             {

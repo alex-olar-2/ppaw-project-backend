@@ -58,7 +58,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null)
+        public async Task AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true)
         {
             try
             {
@@ -94,7 +94,7 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task EditIdentityCard(string identityCardId, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null)
+        public async Task EditIdentityCard(string identityCardId, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true)
         {
             try
             {
