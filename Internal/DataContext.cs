@@ -46,6 +46,9 @@ namespace ExtractInfoIdentityDocument.Internal
                     .WithMany() // fără colecție inversă
                     .HasForeignKey(u => u.RoleId)
                     .OnDelete(DeleteBehavior.Restrict);
+
+                entity.Property(s => s.IsVisible)
+                    .HasDefaultValue(true);
             });
 
             // === Use ===
@@ -72,6 +75,9 @@ namespace ExtractInfoIdentityDocument.Internal
                     .WithMany() // fără colecție inversă
                     .HasForeignKey(u => u.IdentityCardId)
                     .OnDelete(DeleteBehavior.Cascade);
+
+                entity.Property(s => s.IsVisible)
+                    .HasDefaultValue(true);
             });
 
             // === Subscription ===
@@ -101,6 +107,9 @@ namespace ExtractInfoIdentityDocument.Internal
                     .IsUnique()
                     .HasFilter("[IsDefault] = 1")
                     .HasDatabaseName("IX_Subscription_IsDefault_True");
+
+                entity.Property(s => s.IsVisible)
+                    .HasDefaultValue(true);
             });
 
             // === Role ===
@@ -126,6 +135,9 @@ namespace ExtractInfoIdentityDocument.Internal
                     .IsUnique()
                     .HasFilter("[IsDefault] = 1")
                     .HasDatabaseName("IX_Role_IsDefault_True");
+
+                entity.Property(s => s.IsVisible)
+                    .HasDefaultValue(true);
             });
 
 
@@ -144,6 +156,9 @@ namespace ExtractInfoIdentityDocument.Internal
                 entity.HasIndex(i => i.Series);
                 entity.HasIndex(i => new { i.LastName, i.FirstName });
                 entity.HasIndex(i => i.City);
+
+                entity.Property(s => s.IsVisible)
+                    .HasDefaultValue(true);
             });
         }
 
