@@ -15,6 +15,7 @@
             <th>Nume Abonament</th>
             <th>Pret</th>
             <th>Implicit</th>
+            <th>Vizibil</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,7 @@
                 <td>@subscription.Name</td>
                 <td>@subscription.Price</td>
                 <td>@(subscription.IsDefault ? "Da" : "Nu")</td>
+                <td>@(subscription.IsVisible ? "Da" : "Nu")</td>
             </tr>
         }
     </tbody>

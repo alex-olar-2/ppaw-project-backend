@@ -51,7 +51,7 @@ public class SubscriptionController : ControllerBase
 
     [HttpPost]
     [Route("[action]")]
-    public async Task<IActionResult> AddSubscription(string subscriptionName, decimal price, bool isDefault)
+    public async Task<IActionResult> AddSubscription(string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
     {
         await _subscriptionService.AddSubscription(subscriptionName, price, isDefault);
 
@@ -60,7 +60,7 @@ public class SubscriptionController : ControllerBase
 
     [HttpPut]
     [Route("[action]")]
-    public async Task<IActionResult> EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault)
+    public async Task<IActionResult> EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
     {
         await _subscriptionService.EditSubscription(subscriptionId, subscriptionName, price, isDefault);
 

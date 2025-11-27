@@ -18,6 +18,7 @@
             <th>Creat</th>
             <th>Modificat</th>
             <th>Succes</th>
+            <th>Vizibil</th>
         </tr>
     </thead>
     <tbody>
@@ -30,6 +31,7 @@
                 <td>@use.CreatedAt</td>
                 <td>@use.ModifiedAt</td>
                 <td>@(use.IsSucceeded ? "Da" : "Nu")</td>
+                <td>@(use.IsVisible ? "Da" : "Nu")</td>
             </tr>
         }
     </tbody>

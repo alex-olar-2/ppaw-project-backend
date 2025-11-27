@@ -61,7 +61,7 @@ public class UseController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
-    public async Task<IActionResult> AddUse(bool isSucceeded, string userId = null, string identityCardId = null)
+    public async Task<IActionResult> AddUse(bool isSucceeded, string userId = null, string identityCardId = null, bool isVisible = true)
     {
         await _useService.AddUse(isSucceeded, userId, identityCardId);
 
@@ -70,7 +70,7 @@ public class UseController : ControllerBase
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null)
+    public async Task<IActionResult> EditUse(bool isSucceeded, string useId, string userId = null, string identityCardId = null, bool isVisible = true)
     {
         await _useService.EditUse(isSucceeded, useId, userId, identityCardId);
 

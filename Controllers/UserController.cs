@@ -41,7 +41,7 @@ public class UserController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
-    public async Task<IActionResult> AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
+    public async Task<IActionResult> AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true)
     {
         await _userService.AddUser(email, password, cui, subscriptionId, roleId);
 
@@ -50,7 +50,7 @@ public class UserController : ControllerBase
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditUser(string userId, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null)
+    public async Task<IActionResult> EditUser(string userId, string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true)
     {
         await _userService.EditUser(userId, email, password, cui, subscriptionId, roleId);
 

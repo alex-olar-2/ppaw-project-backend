@@ -20,6 +20,7 @@
             <th>Oras</th>
             <th>Judet</th>
             <th>Tara</th>
+            <th>Vizibil</th>
         </tr>
     </thead>
     <tbody>
@@ -35,6 +36,7 @@
                 <td>@identityCard.City</td>
                 <td>@identityCard.County</td>
                 <td>@identityCard.Country</td>
+                <td>@(identityCard.IsDefault ? "Da" : "Nu")</td>
             </tr>
         }
     </tbody>

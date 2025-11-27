@@ -50,7 +50,7 @@ public class RoleController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
-    public async Task<IActionResult> AddRole(string roleName, bool isDefault)
+    public async Task<IActionResult> AddRole(string roleName, bool isDefault, bool isVisible = true)
     {
         await _roleService.AddRole(roleName, isDefault);
 
@@ -59,7 +59,7 @@ public class RoleController : ControllerBase
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditRole(string roleId, string newName, bool isDefault)
+    public async Task<IActionResult> EditRole(string roleId, string newName, bool isDefault, bool isVisible = true)
     {
         await _roleService.EditRole(roleId, newName, isDefault);
 

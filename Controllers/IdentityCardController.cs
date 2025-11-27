@@ -51,7 +51,7 @@ public class IdentityCardController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
-    public async Task<IActionResult> AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null)
+    public async Task<IActionResult> AddIdentityCard(string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true)
     {
         await _identityCardService.AddIdentityCard(cnp, series, firstName, lastName, address, city, county, country);
 
@@ -60,7 +60,7 @@ public class IdentityCardController : ControllerBase
 
     [Route("[action]")]
     [HttpPut]
-    public async Task<IActionResult> EditIdentityCard(string identityCardId = null, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null)
+    public async Task<IActionResult> EditIdentityCard(string identityCardId = null, string cnp = null, string series = null, string firstName = null, string lastName = null, string address = null, string city = null, string county = null, string country = null, bool isVisible = true)
     {
         await _identityCardService.EditIdentityCard(identityCardId, cnp, series, firstName, lastName, address, city, county, country);
 

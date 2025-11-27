@@ -16,6 +16,7 @@
             <th>Id</th>
             <th>Nume Rol</th>
             <th>Implicit</th>
+            <th>Vizibil</th>
         </tr>
     </thead>
     <tbody>
@@ -25,6 +26,7 @@
                 <td>@role.Id</td>
                 <td>@role.Name</td>
                 <td>@(role.IsDefault ? "Da" : "Nu")</td>
+                <td>@(role.IsVisible ? "Da" : "Nu")</td>
             </tr>
         }
     </tbody>

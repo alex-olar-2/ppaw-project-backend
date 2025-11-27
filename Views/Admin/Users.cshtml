@@ -17,6 +17,7 @@
             <th>CUI</th>
             <th>Id Abonament</th>
             <th>Id Rol</th>
+            <th>Vizibil</th>
         </tr>
     </thead>
     <tbody>
@@ -29,6 +30,7 @@
                 <td>@user.Cui</td>
                 <td>@user.userId</td>
                 <td>@user.RoleId</td>
+                <td>@(user.IsVisible ? "Da" : "Nu")</td>
             </tr>
         }
     </tbody>
