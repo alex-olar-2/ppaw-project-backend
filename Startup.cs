@@ -99,6 +99,7 @@ namespace ExtractInfoIdentityDocument
             services.AddScoped<IUseService, UseService>();
             services.AddScoped<ISubscriptionService, SubscriptionService>();
             services.AddScoped<IIdentityCardService, IdentityCardService>();
+            services.AddScoped<IIdentityDocumentAnalyzerService, IdentityDocumentAnalyzerService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
