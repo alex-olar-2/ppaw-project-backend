@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace ExtractInfoIdentityDocument.Services
 {
-    public class IdentityDocumentAnalyzerService
+    public class IdentityDocumentAnalyzerService : IIdentityDocumentAnalyzerService
     {
         private readonly DocumentIntelligenceClient _client;
         private readonly IConfiguration _configuration;
