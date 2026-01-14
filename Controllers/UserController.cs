@@ -24,9 +24,9 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Login(string email, string password)
     {
-        List<User> Users = await _userService.Login(email, password);
+        User users = await _userService.Login(email, password);
 
-        return Ok(Users);
+        return Ok(users);
     }
 
     // GET /User
