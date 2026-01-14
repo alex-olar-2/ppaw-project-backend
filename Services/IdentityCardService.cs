@@ -10,16 +10,23 @@ namespace ExtractInfoIdentityDocument.Services
     public class IdentityCardService : IIdentityCardService
     {
         private readonly IRepository<IdentityCard> _identityCardRepository;
-
         private readonly IFileLoggingService _loggingService;
+        // [MODIFICARE] Adăugăm serviciile necesare pentru Use și UserContext
+        private readonly IUseService _useService;
+        private readonly IUserContextService _userContextService;
 
         public IdentityCardService(
             IRepository<IdentityCard> identityCardRepository,
-            IFileLoggingService loggingService
+            IFileLoggingService loggingService,
+            // [MODIFICARE] Injectăm serviciile
+            IUseService useService,
+            IUserContextService userContextService
             )
         {
             _identityCardRepository = identityCardRepository;
             _loggingService = loggingService;
+            _useService = useService;
+            _userContextService = userContextService;
         }
 
         public async Task<IdentityCard> GetIdentityCardById(string identityCardId)
@@ -27,7 +34,7 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 IdentityCard identityCard = await _identityCardRepository.GetIncludeThenAsync(x => x.Id == Guid.Parse(identityCardId), false, null);
-            
+
                 return identityCard;
             }
             catch (Exception ex)
@@ -76,12 +83,28 @@ namespace ExtractInfoIdentityDocument.Services
                     LastName = !string.IsNullOrEmpty(lastName) ? lastName : String.Empty,
                     Address = !string.IsNullOrEmpty(address) ? address : String.Empty,
                     City = !string.IsNullOrEmpty(city) ? city : String.Empty,
-                    County = !string.IsNullOrEmpty(city) ? county : String.Empty,
+                    County = !string.IsNullOrEmpty(county) ? county : String.Empty,
                     Country = !string.IsNullOrEmpty(country) ? country : String.Empty,
                     IsVisible = isVisible
                 };
 
                 await _identityCardRepository.InsertAsync(identityCard);
+
+                // [MODIFICARE] Creăm automat un Use după inserare
+                try
+                {
+                    // Obținem ID-ul utilizatorului curent
+                    var userId = _userContextService.GetCurrentUserId();
+
+                    // Creăm înregistrarea Use (isSucceeded = true, userId, identityCardId, isVisible)
+                    await _useService.AddUse(true, userId.ToString(), identityCard.Id.ToString(), true);
+                }
+                catch (Exception ex)
+                {
+                    // Logăm eroarea dacă nu reușim să creăm Use-ul (de ex. user neautentificat), 
+                    // dar nu oprim procesul principal
+                    await _loggingService.LogActionAsync("ERROR", "Use", $"Nu s-a putut crea Use pentru cardul {identityCard.Id}: {ex.Message}");
+                }
 
                 await _loggingService.LogActionAsync("CREATE", "IdentityCard", $"A fost creat card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
 
@@ -97,6 +120,17 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _identityCardRepository.InsertAsync(identityCard);
+
+                // [MODIFICARE] Adăugăm logica și aici pentru consistență
+                try
+                {
+                    var userId = _userContextService.GetCurrentUserId();
+                    await _useService.AddUse(true, userId.ToString(), identityCard.Id.ToString(), true);
+                }
+                catch (Exception ex)
+                {
+                    await _loggingService.LogActionAsync("ERROR", "Use", $"Nu s-a putut crea Use pentru cardul {identityCard.Id}: {ex.Message}");
+                }
 
                 await _loggingService.LogActionAsync("CREATE", "IdentityCard", $"A fost creat card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
             }
