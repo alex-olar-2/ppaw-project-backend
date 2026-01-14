@@ -11,11 +11,15 @@ namespace ExtractInfoIdentityDocument.Services
     {
         private readonly IRepository<Subscription> _subscriptionRepository;
 
+        private readonly IFileLoggingService _loggingService;
+
         public SubscriptionService(
-            IRepository<Subscription> subscriptionRepository
+            IRepository<Subscription> subscriptionRepository,
+            IFileLoggingService loggingService
             ) 
         {
             _subscriptionRepository = subscriptionRepository;
+            _loggingService = loggingService;
         }
 
         public async Task<Subscription> GetSubscriptionById(string subscriptionId)
@@ -67,6 +71,8 @@ namespace ExtractInfoIdentityDocument.Services
                 Subscription subscription = new Subscription { Name = subscriptionName, Price = price, IsDefault = isDefault, IsVisible = isVisible };
 
                 await _subscriptionRepository.InsertAsync(subscription);
+
+                await _loggingService.LogActionAsync("CREATE", "Subscription", $"A fost creat abonamentul cu Id: {subscription.Id} si Nume: {subscription.Name}");
             }
             catch (Exception ex)
             {
@@ -79,6 +85,9 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _subscriptionRepository.InsertAsync(subscription);
+
+
+                await _loggingService.LogActionAsync("CREATE", "Subscription", $"A fost creat abonamentul cu Id: {subscription.Id} si Nume: {subscription.Name}");
             }
             catch (Exception ex)
             {
@@ -132,6 +141,8 @@ namespace ExtractInfoIdentityDocument.Services
 
                     // 6. Salvăm modificările în baza de date
                     await _subscriptionRepository.UpdateAsync(subscription);
+
+                    await _loggingService.LogActionAsync("UPDATE", "Subscription", $"A fost editat abonamentul cu Id: {subscription.Id} si Nume: {subscription.Name}");
                 }
             }
             catch (Exception ex)
@@ -147,6 +158,8 @@ namespace ExtractInfoIdentityDocument.Services
                 Subscription subscription = await GetSubscriptionById(subscriptionId);
 
                 await _subscriptionRepository.DeleteAsync(subscription);
+
+                await _loggingService.LogActionAsync("DELETE", "Subscription", $"A fost sters abonamentul cu Id: {subscription.Id} si Nume: {subscription.Name}");
             }
             catch (Exception ex)
             {
@@ -161,6 +174,8 @@ namespace ExtractInfoIdentityDocument.Services
                 IList<Subscription> subscriptions = await _subscriptionRepository.GetAllAsync();
 
                 await _subscriptionRepository.DeleteAsync(subscriptions);
+
+                await _loggingService.LogActionAsync("DELETE", "Subscription", $"A fost sterse toate abonamentele");
             }
             catch (Exception ex)
             {
