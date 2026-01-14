@@ -1,0 +1,26 @@
+﻿@{
+    ViewData["Title"] = "Adaugă Rol";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Adaugă Rol</h2>
+
+<form method="post" action="/Admin/CreateRole" class="mt-4">
+    <div class="mb-3">
+        <label class="form-label">Nume Rol</label>
+        <input type="text" name="name" class="form-control" required />
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="isDefault" class="form-check-input" value="true" />
+        <label class="form-check-label">Implicit (Setează acest rol ca default pentru utilizatorii noi)</label>
+    </div>
+
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="isVisible" class="form-check-input" value="true" checked />
+        <label class="form-check-label">Vizibil</label>
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvează</button>
+    <a href="/Admin/Roles" class="btn btn-secondary">Anulează</a>
+</form>

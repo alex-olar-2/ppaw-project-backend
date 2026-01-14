@@ -1,14 +1,13 @@
-﻿@{
+﻿@model List<ExtractInfoIdentityDocument.Models.Role>
+@{
+    ViewData["Title"] = "Roluri";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@model List<ExtractInfoIdentityDocument.Models.Role>
-
-@{
-    ViewData["Title"] = "Roluri";
-}
-
-<h1>Lista Rolurilor</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Lista Rolurilor</h1>
+    <a href="/Admin/CreateRole" class="btn btn-primary">Adaugă Rol Nou</a>
+</div>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -17,6 +16,7 @@
             <th>Nume Rol</th>
             <th>Implicit</th>
             <th>Vizibil</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +27,13 @@
                 <td>@role.Name</td>
                 <td>@(role.IsDefault ? "Da" : "Nu")</td>
                 <td>@(role.IsVisible ? "Da" : "Nu")</td>
+                <td>
+                    <a href="/Admin/EditRole?id=@role.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="/Admin/DeleteRole" method="post" style="display:inline;" onsubmit="return confirm('Sigur doriți să ștergeți acest rol?');">
+                        <input type="hidden" name="id" value="@role.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Șterge</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
