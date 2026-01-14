@@ -29,6 +29,7 @@ public class UserController : ControllerBase
     // GET /Login
     [Route("[action]")]
     [HttpGet]
+    [AllowAnonymous]
     public async Task<IActionResult> Login(string email, string password)
     {
         User user = await _userService.Login(email, password);
@@ -65,6 +66,7 @@ public class UserController : ControllerBase
 
     [Route("[action]")]
     [HttpPost]
+    [AllowAnonymous]
     public async Task<IActionResult> AddUser(string email = null, string password = null, string cui = null, string subscriptionId = null, string roleId = null, bool isVisible = true)
     {
         await _userService.AddUser(email, password, cui, subscriptionId, roleId);
