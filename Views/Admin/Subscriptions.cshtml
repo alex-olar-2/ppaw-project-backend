@@ -1,12 +1,13 @@
-﻿@{
+﻿@model List<ExtractInfoIdentityDocument.Models.Subscription>
+@{
+    ViewData["Title"] = "Abonamente";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@{
-    ViewData["Title"] = "Abonamente";
-}
-
-<h1>Lista Abonamentelor</h1>
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h1>Lista Abonamentelor</h1>
+    <a href="/Admin/CreateSubscription" class="btn btn-primary">Adaugă Abonament Nou</a>
+</div>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -16,6 +17,7 @@
             <th>Pret</th>
             <th>Implicit</th>
             <th>Vizibil</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -27,6 +29,13 @@
                 <td>@subscription.Price</td>
                 <td>@(subscription.IsDefault ? "Da" : "Nu")</td>
                 <td>@(subscription.IsVisible ? "Da" : "Nu")</td>
+                <td>
+                    <a href="/Admin/EditSubscription?id=@subscription.Id" class="btn btn-sm btn-warning">Edit</a>
+                    <form action="/Admin/DeleteSubscription" method="post" style="display:inline;" onsubmit="return confirm('Sigur doriți să ștergeți acest abonament?');">
+                        <input type="hidden" name="id" value="@subscription.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Șterge</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
