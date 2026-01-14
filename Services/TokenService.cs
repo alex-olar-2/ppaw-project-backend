@@ -20,30 +20,37 @@ namespace ExtractInfoIdentityDocument.Services
 
         public string GenerateToken(User user)
         {
-            var claims = new List<Claim>
+            try
             {
-                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // ID-ul utilizatorului in Context
-                new Claim(ClaimTypes.Email, user.Email),
-                // Poți adăuga și rolul dacă dorești
-                 new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
-            };
+                var claims = new List<Claim>
+                {
+                    new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // ID-ul utilizatorului in Context
+                    new Claim(ClaimTypes.Email, user.Email),
+                    // Poți adăuga și rolul dacă dorești
+                     new Claim(ClaimTypes.Role, user.Role?.Name ?? "User")
+                };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+                var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["JwtSettings:Key"]));
+                var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
-            var tokenDescriptor = new SecurityTokenDescriptor
+                var tokenDescriptor = new SecurityTokenDescriptor
+                {
+                    Subject = new ClaimsIdentity(claims),
+                    Expires = DateTime.Now.AddMinutes(double.Parse(_configuration["JwtSettings:DurationInMinutes"])),
+                    SigningCredentials = creds,
+                    Issuer = _configuration["JwtSettings:Issuer"],
+                    Audience = _configuration["JwtSettings:Audience"]
+                };
+
+                var tokenHandler = new JwtSecurityTokenHandler();
+                var token = tokenHandler.CreateToken(tokenDescriptor);
+
+                return tokenHandler.WriteToken(token);
+            }
+            catch (Exception ex)
             {
-                Subject = new ClaimsIdentity(claims),
-                Expires = DateTime.Now.AddMinutes(double.Parse(_configuration["JwtSettings:DurationInMinutes"])),
-                SigningCredentials = creds,
-                Issuer = _configuration["JwtSettings:Issuer"],
-                Audience = _configuration["JwtSettings:Audience"]
-            };
-
-            var tokenHandler = new JwtSecurityTokenHandler();
-            var token = tokenHandler.CreateToken(tokenDescriptor);
-
-            return tokenHandler.WriteToken(token);
+                throw ex;
+            }
         }
     }
 }
