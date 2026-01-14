@@ -59,29 +59,20 @@ namespace ExtractInfoIdentityDocument.Controllers
             var user = await _userService.GetUserById(id);
             if (user == null) return NotFound();
 
-            // --- COD NOU ADĂUGAT ---
-            // 1. Obținem Rolul specific folosind ID-ul din user
-            var currentRole = await _roleService.GetRoleById(user.RoleId.ToString());
-
-            // 2. Obținem Abonamentul specific folosind ID-ul din user
-            var currentSubscription = await _subscriptionService.GetSubscriptionById(user.SubscriptionId.ToString());
-
-            // 3. Trimitem numele lor către View prin ViewBag
-            ViewBag.CurrentRoleName = currentRole?.Name ?? "Rol Necunoscut";
-            ViewBag.CurrentSubscriptionName = currentSubscription?.Name ?? "Abonament Necunoscut";
-            // -----------------------
-
-            // Codul existent pentru popularea dropdown-urilor (dacă vrei să poți și schimba rolul/abonamentul)
+            // Verifică dacă aceste linii există și dacă returnează date
             ViewBag.Roles = new SelectList(await _roleService.GetAllRoles(), "Id", "Name", user.RoleId);
             ViewBag.Subscriptions = new SelectList(await _subscriptionService.GetAllSubscriptions(), "Id", "Name", user.SubscriptionId);
 
             return View(user);
         }
 
+        // POST: Procesează formularul trimis
         [HttpPost]
         public async Task<IActionResult> EditUser(string id, string email, string password, string cui, string subscriptionId, string roleId, bool isVisible)
         {
+            // Aici primim ID-urile (subscriptionId și roleId) din formular, nu numele.
             await _userService.EditUser(id, email, password, cui, subscriptionId, roleId, isVisible);
+
             return RedirectToAction(nameof(Users));
         }
 

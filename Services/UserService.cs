@@ -139,23 +139,29 @@ namespace ExtractInfoIdentityDocument.Services
                         user.Cui = cui;
                     }
 
+                    // Actualizare ROL
                     if (!string.IsNullOrEmpty(roleId))
                     {
                         user.RoleId = Guid.Parse(roleId);
-
+                        // Opțional: Poți actualiza și obiectul de navigare, deși doar ID-ul este esențial pentru EF Core de multe ori
                         Role role = await _roleService.GetRoleById(roleId);
-
                         if (role != null)
                         {
                             user.Role = role;
                         }
                     }
 
+                    // Actualizare ABONAMENT
                     if (!string.IsNullOrEmpty(subscriptionId))
                     {
-                        user.RoleId = Guid.Parse(subscriptionId);
+                        // AICI ERA EROAREA: scria user.RoleId = ...
+                        user.SubscriptionId = Guid.Parse(subscriptionId);
 
-                        // De completat cu subscription
+                        Subscription subscription = await _subscriptionService.GetSubscriptionById(subscriptionId);
+                        if (subscription != null)
+                        {
+                            user.Subscription = subscription;
+                        }
                     }
 
                     user.IsVisible = isVisible;

@@ -1,4 +1,5 @@
-﻿@model ExtractInfoIdentityDocument.Models.User
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@model ExtractInfoIdentityDocument.Models.User
 @{
     ViewData["Title"] = "Editează Utilizator";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -15,29 +16,54 @@
     </div>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">Rol Curent (Extras prin ID):</label>
-        <input type="text" class="form-control bg-light" value="@ViewBag.CurrentRoleName" readonly />
+        <label class="form-label">Parolă (Lasă neschimbat sau introdu una nouă)</label>
+        <input type="text" name="password" class="form-control" value="@Model.Password" />
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Schimbă Rolul (Opțional)</label>
-        <select name="roleId" class="form-control" asp-items="ViewBag.Roles"></select>
+        <label class="form-label">CUI</label>
+        <input type="text" name="cui" class="form-control" value="@Model.Cui" />
     </div>
 
     <div class="mb-3">
-        <label class="form-label fw-bold">Abonament Curent (Extras prin ID):</label>
-        <input type="text" class="form-control bg-light" value="@ViewBag.CurrentSubscriptionName" readonly />
+        <label class="form-label fw-bold">Rol</label>
+        <select name="roleId" class="form-control">
+            @if (ViewBag.Roles is IEnumerable<SelectListItem> roles)
+            {
+                foreach (var role in roles)
+                {
+                    <!option value="@role.Value" @(role.Selected ? "selected" : "")>@role.Text</!option>
+                }
+            }
+            else
+            {
+                <option disabled>Nu s-au găsit roluri</option>
+            }
+        </select>
     </div>
 
     <div class="mb-3">
-        <label class="form-label">Schimbă Abonamentul (Opțional)</label>
-        <select name="subscriptionId" class="form-control" asp-items="ViewBag.Subscriptions"></select>
+        <label class="form-label fw-bold">Abonament</label>
+        <select name="subscriptionId" class="form-control">
+            @if (ViewBag.Subscriptions is IEnumerable<SelectListItem> subs)
+            {
+                foreach (var sub in subs)
+                {
+                    <!option value="@sub.Value" @(sub.Selected ? "selected" : "")>@sub.Text</!option>
+                }
+            }
+            else
+            {
+                <option disabled>Nu s-au găsit abonamente</option>
+            }
+        </select>
     </div>
 
     <div class="mb-3 form-check">
         <input type="checkbox" name="isVisible" class="form-check-input" value="true" @(Model.IsVisible ? "checked" : "") />
         <label class="form-check-label">Vizibil</label>
     </div>
+
     <button type="submit" class="btn btn-primary">Actualizează</button>
     <a href="/Admin/Users" class="btn btn-secondary">Anulează</a>
 </form>
