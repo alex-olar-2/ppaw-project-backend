@@ -62,7 +62,7 @@ public class SubscriptionController : ControllerBase
     [Route("[action]")]
     public async Task<IActionResult> EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
     {
-        await _subscriptionService.EditSubscription(subscriptionId, subscriptionName, price, isDefault);
+        await _subscriptionService.EditSubscription(subscriptionId, subscriptionName, price, isDefault, isVisible);
 
         return Ok();
     }

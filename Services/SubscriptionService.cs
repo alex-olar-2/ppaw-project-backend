@@ -86,19 +86,51 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
+        // În fișierul: Services/SubscriptionService.cs
+
         public async Task EditSubscription(string subscriptionId, string subscriptionName, decimal price, bool isDefault, bool isVisible = true)
         {
             try
             {
                 if (!string.IsNullOrEmpty(subscriptionId))
                 {
+                    // 1. Obținem abonamentul existent din baza de date
                     Subscription subscription = await GetSubscriptionById(subscriptionId);
 
-                    subscription.Name = !string.IsNullOrEmpty(subscriptionName) ? subscriptionName : String.Empty;
-                    subscription.Price = price > 0 ? price : subscription.Price;
-                    subscription.IsDefault = isDefault != null ? isDefault : false;
-                    subscription.IsDefault = isVisible;
+                    if (subscription == null)
+                    {
+                        throw new Exception("Abonamentul nu a fost găsit.");
+                    }
 
+                    // 2. Actualizăm Numele (doar dacă s-a furnizat unul nou)
+                    subscription.Name = !string.IsNullOrEmpty(subscriptionName) ? subscriptionName : subscription.Name;
+
+                    // 3. Actualizăm Prețul
+                    // Notă: Logica actuală ignoră prețul 0. Dacă dorești abonamente gratuite, șterge condiția `price > 0`.
+                    subscription.Price = price > 0 ? price : subscription.Price;
+
+                    // 4. Gestionare logică "IsDefault" (pentru a evita eroarea de index unic SQL)
+                    // Dacă setăm acest abonament ca Implicit (true) și el nu era deja implicit...
+                    if (isDefault && !subscription.IsDefault)
+                    {
+                        // ...căutăm vechiul abonament implicit
+                        var oldDefault = await GetDefaultSubscription();
+
+                        // Dacă există unul și este diferit de cel curent, îl dezactivăm
+                        if (oldDefault != null && oldDefault.Id != subscription.Id)
+                        {
+                            oldDefault.IsDefault = false;
+                            await _subscriptionRepository.UpdateAsync(oldDefault);
+                        }
+                    }
+
+                    // Setăm noua valoare pentru IsDefault
+                    subscription.IsDefault = isDefault;
+
+                    // 5. FIX CRITIC: Atribuim corect IsVisible (înainte era subscription.IsDefault = isVisible)
+                    subscription.IsVisible = isVisible;
+
+                    // 6. Salvăm modificările în baza de date
                     await _subscriptionRepository.UpdateAsync(subscription);
                 }
             }
