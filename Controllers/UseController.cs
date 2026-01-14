@@ -49,6 +49,17 @@ public class UseController : ControllerBase
         return Ok(use);
     }
 
+    // GET /Use/GetUsesByUserId?userId=...
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> GetUsesByUserId(string userId)
+    {
+        // Acum returnãm List<Use> în loc de Use
+        List<Use> uses = await _useService.GetUsesByUserId(userId);
+
+        return Ok(uses);
+    }
+
     // GET /Use/{id}
     [Route("[action]")]
     [HttpGet]

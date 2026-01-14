@@ -51,6 +51,29 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
+        public async Task<List<Use>> GetUsesByUserId(string userId)
+        {
+            try
+            {
+                // Obținem toate utilizările
+                // NOTĂ: Ideal ar fi să folosim o metodă din Repository care face filtrarea direct în baza de date (ex: FindByCondition)
+                // și care face Include la IdentityCard. 
+                // Pentru moment, filtrăm lista completă (in-memory filtering):
+                IList<Use> allUses = await _useRepository.GetAllAsync();
+
+                var userUses = allUses
+                    .Where(x => x.UserId == Guid.Parse(userId))
+                    .OrderByDescending(x => x.CreatedAt) // Ordonăm descrescător după dată
+                    .ToList();
+
+                return userUses;
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+
         public async Task<Use> GetUseByIdentityCardId(string identityCardId)
         {
             try

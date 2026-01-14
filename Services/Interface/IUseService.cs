@@ -8,6 +8,8 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 
         Task<Use> GetUseByUserId(string userId);
 
+        Task<List<Use>> GetUsesByUserId(string userId);
+
         Task<Use> GetUseByIdentityCardId(string userId);
 
         Task<List<Use>> GetAllUses();
