@@ -5,6 +5,7 @@ using ExtractInfoIdentityDocument.Services.Interface;
 
 using System.Diagnostics.Metrics;
 using System.Net;
+using System.Runtime.Intrinsics.X86;
 
 namespace ExtractInfoIdentityDocument.Services
 {
@@ -12,11 +13,15 @@ namespace ExtractInfoIdentityDocument.Services
     {
         private readonly IRepository<Use> _useRepository;
 
+        private readonly IFileLoggingService _loggingService;
+
         public UseService(
-            IRepository<Use> useRepository
+            IRepository<Use> useRepository,
+            IFileLoggingService loggingService
             )
         {
             _useRepository = useRepository;
+            _loggingService = loggingService;
         }
         public async Task<Use> GetUseById(string useId)
         {
@@ -89,6 +94,9 @@ namespace ExtractInfoIdentityDocument.Services
                 };
 
                 await _useRepository.InsertAsync(use);
+
+                await _loggingService.LogActionAsync("CREATE", "Use", $"A fost creat utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
+
             }
             catch (Exception ex)
             {
@@ -96,11 +104,13 @@ namespace ExtractInfoIdentityDocument.Services
             }
         }
 
-        public async Task AddUse(Use Use)
+        public async Task AddUse(Use use)
         {
             try
             {
-                await _useRepository.InsertAsync(Use);
+                await _useRepository.InsertAsync(use);
+
+                await _loggingService.LogActionAsync("CREATE", "Use", $"A fost creat utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
             }
             catch (Exception ex)
             {
@@ -121,7 +131,12 @@ namespace ExtractInfoIdentityDocument.Services
                     use.UserId = !string.IsNullOrEmpty(useId) ? Guid.Parse(userId) : use.UserId;
                     use.IdentityCardId = !string.IsNullOrEmpty(identityCardId) ? Guid.Parse(identityCardId) : use.IdentityCardId;
                     use.IsVisible = isVisible;
+
+
+                    await _loggingService.LogActionAsync("UPDATE", "Use", $"A fost editate utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
                 }
+
+
             }
             catch (Exception ex)
             {
@@ -136,6 +151,8 @@ namespace ExtractInfoIdentityDocument.Services
                 Use use = await GetUseById(useId);
 
                 await _useRepository.DeleteAsync(use);
+
+                await _loggingService.LogActionAsync("DELETE", "Use", $"A fost sters utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
             }
             catch (Exception ex)
             {
@@ -150,6 +167,8 @@ namespace ExtractInfoIdentityDocument.Services
                 Use use = await GetUseByUserId(userId);
 
                 await _useRepository.DeleteAsync(use);
+
+                await _loggingService.LogActionAsync("DELETE", "Use", $"A fost sters utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
             }
             catch (Exception ex)
             {
@@ -164,6 +183,8 @@ namespace ExtractInfoIdentityDocument.Services
                 Use use = await GetUseByIdentityCardId(identityCardId);
 
                 await _useRepository.DeleteAsync(use);
+
+                await _loggingService.LogActionAsync("DELETE", "Use", $"A fost sters utilizarea cu UserId: {use.User} si IdentityCardId: {use.IdentityCardId}");
             }
             catch (Exception ex)
             {
@@ -178,6 +199,8 @@ namespace ExtractInfoIdentityDocument.Services
                 IList<Use> uses = await _useRepository.GetAllAsync();
 
                 await _useRepository.DeleteAsync(uses);
+
+                await _loggingService.LogActionAsync("DELETE", "Use", $"A fost sterse toate utilizarile");
             }
             catch (Exception ex)
             {

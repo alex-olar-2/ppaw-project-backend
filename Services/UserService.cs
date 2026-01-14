@@ -17,15 +17,19 @@ namespace ExtractInfoIdentityDocument.Services
 
         private readonly ISubscriptionService _subscriptionService;
 
+        private readonly IFileLoggingService _loggingService;
+
         public UserService(
             IRepository<User> userRepository,
             IRoleService roleService,
-            ISubscriptionService subscriptionService
+            ISubscriptionService subscriptionService,
+            IFileLoggingService loggingService
             )
         {
             _userRepository = userRepository;
             _roleService = roleService;
             _subscriptionService = subscriptionService;
+            _loggingService = loggingService;
         }
 
         public async Task<User> Login(string email, string password)
@@ -75,6 +79,8 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _userRepository.InsertAsync(user);
+
+                await _loggingService.LogActionAsync("CREATE", "User", $"A fost creat utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
             }
             catch (Exception ex)
             {
@@ -97,6 +103,9 @@ namespace ExtractInfoIdentityDocument.Services
                 };
 
                 await _userRepository.InsertAsync(user);
+
+
+                await _loggingService.LogActionAsync("CREATE", "User", $"A fost creat utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
             }
             catch (Exception ex)
             {
@@ -109,6 +118,9 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _userRepository.UpdateOnlyModifiedFieldsAsync(user);
+
+
+                await _loggingService.LogActionAsync("UPDATE", "User", $"A fost editat utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
             }
             catch (Exception ex)
             {
@@ -167,6 +179,8 @@ namespace ExtractInfoIdentityDocument.Services
                     user.IsVisible = isVisible;
 
                     await _userRepository.UpdateOnlyModifiedFieldsAsync(user);
+
+                    await _loggingService.LogActionAsync("UPDATE", "User", $"A fost editat utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
                 }
             }
             catch (Exception ex)
@@ -182,6 +196,8 @@ namespace ExtractInfoIdentityDocument.Services
                 var user = await GetUserById(userId);
 
                 await _userRepository.DeleteAsync(user);
+
+                await _loggingService.LogActionAsync("DELETE", "User", $"A fost sters utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
             }
             catch (Exception ex)
             {
@@ -194,6 +210,9 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _userRepository.DeleteAsync(user);
+
+
+                await _loggingService.LogActionAsync("DELETE", "User", $"A fost sters utilizatorul cu emailul: {user.Email} si CUI: {user.Cui}");
             }
             catch (Exception ex)
             {
@@ -203,9 +222,20 @@ namespace ExtractInfoIdentityDocument.Services
 
         public async Task DeleteAllUsers()
         {
-            IList<User> Users = await _userRepository.GetAllAsync();
+            try
+            { 
+                IList<User> Users = await _userRepository.GetAllAsync();
 
-            await _userRepository.DeleteAsync(Users);
+                await _userRepository.DeleteAsync(Users);
+
+
+                await _loggingService.LogActionAsync("DELETE", "User", $"Au fost sters toti utilizatorii");
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
     }
 }

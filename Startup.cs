@@ -140,6 +140,7 @@ namespace ExtractInfoIdentityDocument
             // Servicii pentru Auth/Token
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserContextService, UserContextService>();
+            services.AddScoped<IFileLoggingService, FileLoggingService>();
         }
 
         // Această metodă este apelată de runtime. Folosește-o pentru a configura pipeline-ul HTTP.
