@@ -1,0 +1,35 @@
+﻿@{
+    ViewData["Title"] = "Adaugă Utilizator";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Adaugă Utilizator</h2>
+
+<form method="post" action="/Admin/CreateUser" class="mt-4">
+    <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="email" name="email" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Parolă</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">CUI</label>
+        <input type="text" name="cui" class="form-control" required />
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Rol</label>
+        <select name="roleId" class="form-control" asp-items="ViewBag.Roles"></select>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Abonament</label>
+        <select name="subscriptionId" class="form-control" asp-items="ViewBag.Subscriptions"></select>
+    </div>
+    <div class="mb-3 form-check">
+        <input type="checkbox" name="isVisible" class="form-check-input" value="true" checked />
+        <label class="form-check-label">Vizibil</label>
+    </div>
+    <button type="submit" class="btn btn-success">Salvează</button>
+    <a href="/Admin/Users" class="btn btn-secondary">Anulează</a>
+</form>
