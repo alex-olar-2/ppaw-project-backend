@@ -1,10 +1,7 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
-
+﻿@model List<ExtractInfoIdentityDocument.Models.Use>
 @{
     ViewData["Title"] = "Utilizari";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h1>Lista Utilizarilor</h1>
@@ -19,6 +16,7 @@
             <th>Modificat</th>
             <th>Succes</th>
             <th>Vizibil</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -32,6 +30,12 @@
                 <td>@use.ModifiedAt</td>
                 <td>@(use.IsSucceeded ? "Da" : "Nu")</td>
                 <td>@(use.IsVisible ? "Da" : "Nu")</td>
+                <td>
+                    <form action="/Admin/DeleteUse" method="post" style="display:inline;" onsubmit="return confirm('Sigur doriți să ștergeți această utilizare?');">
+                        <input type="hidden" name="id" value="@use.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Șterge</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
