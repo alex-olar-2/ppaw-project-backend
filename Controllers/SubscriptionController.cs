@@ -1,10 +1,13 @@
 using ExtractInfoIdentityDocument.Models;
 using ExtractInfoIdentityDocument.Services.Interface;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class SubscriptionController : ControllerBase
 {
     private readonly ILogger<SubscriptionController> _logger;

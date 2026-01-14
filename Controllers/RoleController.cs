@@ -1,10 +1,13 @@
 using ExtractInfoIdentityDocument.Models;
 using ExtractInfoIdentityDocument.Services.Interface;
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 [ApiController]
 [Route("[controller]")]
+[Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
 public class RoleController : ControllerBase
 {
     private readonly ILogger<RoleController> _logger;
