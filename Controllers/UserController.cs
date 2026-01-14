@@ -1,4 +1,5 @@
 using ExtractInfoIdentityDocument.Models;
+using ExtractInfoIdentityDocument.Services;
 using ExtractInfoIdentityDocument.Services.Interface;
 
 using Microsoft.AspNetCore.Mvc;
@@ -9,14 +10,17 @@ public class UserController : ControllerBase
 {
     private readonly ILogger<UserController> _logger;
     private readonly IUserService _userService;
+    private readonly ITokenService _tokenService;
 
     public UserController(
         ILogger<UserController> logger,
-        IUserService userService
+        IUserService userService,
+        ITokenService tokenService
         )
     {
         _logger = logger;
         _userService = userService;
+        _tokenService = tokenService;
     }
 
     // GET /Login
@@ -24,9 +28,16 @@ public class UserController : ControllerBase
     [HttpGet]
     public async Task<IActionResult> Login(string email, string password)
     {
-        User users = await _userService.Login(email, password);
+        User user = await _userService.Login(email, password);
 
-        return Ok(users);
+        if (user == null)
+        {
+            return Unauthorized("Email sau parolã incorectã.");
+        }
+
+        var token = _tokenService.GenerateToken(user);
+
+        return Ok(new { Token = token, UserId = user.Id, Email = user.Email });
     }
 
     // GET /User
