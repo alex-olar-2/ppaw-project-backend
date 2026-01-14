@@ -46,6 +46,18 @@ namespace ExtractInfoIdentityDocument
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowFrontend",
+                    builder =>
+                    {
+                        builder.WithOrigins("http://localhost:4200", "https://localhost:4200") // URL-ul frontend-ului tău
+                               .AllowAnyMethod()
+                               .AllowAnyHeader()
+                               .AllowCredentials(); // Important dacă folosești cookie-uri sau auth headers
+                    });
+            });
+
             // --- 1. Configurare Swagger ---
             services.AddSwaggerGen(c =>
             {
@@ -162,6 +174,8 @@ namespace ExtractInfoIdentityDocument
             app.UseStaticFiles(); // Necesar pentru CSS/JS în Login și Admin
 
             app.UseRouting();
+
+            app.UseCors("AllowFrontend");
 
             // --- 5. Activare Middleware Autentificare ---
             app.UseAuthentication();
