@@ -1,4 +1,5 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Mvc.Rendering
+@{
     ViewData["Title"] = "Adaugă Utilizator";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,26 +11,58 @@
         <label class="form-label">Email</label>
         <input type="email" name="email" class="form-control" required />
     </div>
+
     <div class="mb-3">
         <label class="form-label">Parolă</label>
         <input type="password" name="password" class="form-control" required />
     </div>
+
     <div class="mb-3">
         <label class="form-label">CUI</label>
         <input type="text" name="cui" class="form-control" required />
     </div>
+
     <div class="mb-3">
-        <label class="form-label">Rol</label>
-        <select name="roleId" class="form-control" asp-items="ViewBag.Roles"></select>
+        <label class="form-label fw-bold">Rol</label>
+        <select name="roleId" class="form-control">
+            <option value="">-- Selectează un Rol (Implicit dacă e gol) --</option>
+            @if (ViewBag.Roles is IEnumerable<SelectListItem> roles)
+            {
+                foreach (var role in roles)
+                {
+                    <option value="@role.Value">@role.Text</option>
+                }
+            }
+            else
+            {
+                <option disabled>Nu s-au găsit roluri</option>
+            }
+        </select>
     </div>
+
     <div class="mb-3">
-        <label class="form-label">Abonament</label>
-        <select name="subscriptionId" class="form-control" asp-items="ViewBag.Subscriptions"></select>
+        <label class="form-label fw-bold">Abonament</label>
+        <select name="subscriptionId" class="form-control">
+            <option value="">-- Selectează un Abonament (Implicit dacă e gol) --</option>
+            @if (ViewBag.Subscriptions is IEnumerable<SelectListItem> subs)
+            {
+                foreach (var sub in subs)
+                {
+                    <option value="@sub.Value">@sub.Text</option>
+                }
+            }
+            else
+            {
+                <option disabled>Nu s-au găsit abonamente</option>
+            }
+        </select>
     </div>
+
     <div class="mb-3 form-check">
         <input type="checkbox" name="isVisible" class="form-check-input" value="true" checked />
         <label class="form-check-label">Vizibil</label>
     </div>
+
     <button type="submit" class="btn btn-success">Salvează</button>
     <a href="/Admin/Users" class="btn btn-secondary">Anulează</a>
 </form>
