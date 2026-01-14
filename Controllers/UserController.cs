@@ -19,6 +19,16 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
+    // GET /Login
+    [Route("[action]")]
+    [HttpGet]
+    public async Task<IActionResult> Login(string email, string password)
+    {
+        List<User> Users = await _userService.Login(email, password);
+
+        return Ok(Users);
+    }
+
     // GET /User
     [Route("[action]")]
     [HttpGet]

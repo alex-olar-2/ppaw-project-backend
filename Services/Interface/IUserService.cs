@@ -4,6 +4,8 @@ namespace ExtractInfoIdentityDocument.Services.Interface
 {
     public interface IUserService
     {
+        Task<User> Login(string username, string password);
+
         Task<User> GetUserById(string userId);
 
         Task<List<User>> GetAllUsers();

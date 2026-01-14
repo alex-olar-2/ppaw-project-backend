@@ -28,6 +28,20 @@ namespace ExtractInfoIdentityDocument.Services
             _subscriptionService = subscriptionService;
         }
 
+        public async Task<User> Login(string email, string password)
+        {
+            try
+            {
+                User user = await _userRepository.GetIncludeThenAsync(x => x.Email == email && x.Password == password, false, null);
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
         public async Task<User> GetUserById(string UserId)
         {
             try
