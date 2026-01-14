@@ -7,6 +7,7 @@ using ExtractInfoIdentityDocument.Internal;
 using ExtractInfoIdentityDocument.Services;
 using ExtractInfoIdentityDocument.Services.Interface;
 
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer; // Necesare pentru JWT
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -45,7 +46,7 @@ namespace ExtractInfoIdentityDocument
                     Newtonsoft.Json.ReferenceLoopHandling.Ignore;
             });
 
-            // --- 1. Configurare Swagger (deja existentă, bună pentru JWT) ---
+            // --- 1. Configurare Swagger ---
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "ExtractInfoIdentityDocument", Version = "v1" });
@@ -92,14 +93,22 @@ namespace ExtractInfoIdentityDocument
                 context.LogTo(Console.WriteLine);
             });
 
-            // --- 3. Configurare Autentificare JWT (NOU) ---
-            // Asigură-te că ai secțiunea "JwtSettings" în appsettings.json
+            // --- 3. Configurare Autentificare (MODIFICAT) ---
+            // Setăm schema default pe Cookie pentru a proteja paginile MVC (Admin)
+            // Dar păstrăm și JWT pentru request-urile de API
             services.AddAuthentication(options =>
             {
-                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Implicit Cookie
+                options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddJwtBearer(options =>
+            .AddCookie(options => // Configurare Cookie
+            {
+                options.LoginPath = "/Account/Login"; // Ruta către pagina de login
+                options.AccessDeniedPath = "/Account/AccessDenied"; // Ruta pentru acces interzis
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Expiră după 60 min
+            })
+            .AddJwtBearer(options => // Configurare JWT (rămâne neschimbată)
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -110,7 +119,7 @@ namespace ExtractInfoIdentityDocument
                     ValidateAudience = true,
                     ValidAudience = Configuration["JwtSettings:Audience"],
                     ValidateLifetime = true,
-                    ClockSkew = TimeSpan.Zero // Opțional: elimină toleranța implicită de 5 min
+                    ClockSkew = TimeSpan.Zero
                 };
             });
 
@@ -130,7 +139,7 @@ namespace ExtractInfoIdentityDocument
             services.AddScoped<IIdentityCardService, IdentityCardService>();
             services.AddScoped<IIdentityDocumentAnalyzerService, IdentityDocumentAnalyzerService>();
 
-            // Serviciile NOI pentru Auth
+            // Serviciile pentru Auth
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserContextService, UserContextService>();
         }
@@ -138,29 +147,31 @@ namespace ExtractInfoIdentityDocument
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-
             app.UseDeveloperExceptionPage();
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExtractInfoIdentityDocument v1");
                 c.RoutePrefix = "";
             });
+
             var option = new RewriteOptions();
-            option.AddRedirect("^$", "index.html");
+            option.AddRedirect("^$", "index.html"); // Redirecționare existentă (poate vrei să o schimbi spre Admin dacă e default)
             app.UseRewriter(option);
+
             app.UseHttpsRedirection();
+            app.UseStaticFiles(); // NECESAR pentru a încărca CSS/JS în paginile de Login/Admin
 
             app.UseRouting();
 
-            // --- 5. Activare Middleware Autentificare (NOU) ---
-            // Ordinea este critică: UseAuthentication înainte de UseAuthorization
-            app.UseAuthentication();
-            app.UseAuthorization();
+            // --- 5. Activare Middleware Autentificare ---
+            app.UseAuthentication(); // Verifică cookie-ul sau token-ul
+            app.UseAuthorization();  // Verifică rolurile/permisiunile
 
             app.UseEndpoints(endpoints =>
             {
+                // Ruta default pentru admin/MVC
                 endpoints.MapControllerRoute(
-                    name: "admin",
+                    name: "default",
                     pattern: "{controller=Admin}/{action=Index}/{id?}"
                 );
 

@@ -1,10 +1,12 @@
 ﻿using ExtractInfoIdentityDocument.Models;
 using ExtractInfoIdentityDocument.Services.Interface;
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ExtractInfoIdentityDocument.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class AdminController : Controller
     {
         private readonly IRoleService _roleService;
