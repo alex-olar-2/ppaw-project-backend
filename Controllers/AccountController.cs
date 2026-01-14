@@ -64,7 +64,7 @@ namespace ExtractInfoIdentityDocument.Controllers
             var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
             var authProperties = new AuthenticationProperties
             {
-                IsPersistent = true // Ține minte utilizatorul
+                IsPersistent = false // Ține minte utilizatorul
             };
 
             // 4. Scriem Cookie-ul (Login efectiv)
