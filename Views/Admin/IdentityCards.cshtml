@@ -1,12 +1,8 @@
-﻿@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
-
+﻿@model List<ExtractInfoIdentityDocument.Models.IdentityCard>
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
     ViewData["Title"] = "Carti de identitate";
 }
-
-<h1>Lista Cartilor De Identitate</h1>
 
 <table class="table table-bordered table-striped">
     <thead>
@@ -21,6 +17,7 @@
             <th>Judet</th>
             <th>Tara</th>
             <th>Vizibil</th>
+            <th>Acțiuni</th>
         </tr>
     </thead>
     <tbody>
@@ -36,7 +33,15 @@
                 <td>@identityCard.City</td>
                 <td>@identityCard.County</td>
                 <td>@identityCard.Country</td>
-                <td>@(identityCard.IsDefault ? "Da" : "Nu")</td>
+                <td>@(identityCard.IsVisible ? "Da" : "Nu")</td>
+                <td>
+                    <a href="/Admin/EditIdentityCard?id=@identityCard.Id" class="btn btn-sm btn-warning">Edit</a>
+
+                    <form action="/Admin/DeleteIdentityCard" method="post" style="display:inline;" onsubmit="return confirm('Sigur doriți să ștergeți această carte de identitate?');">
+                        <input type="hidden" name="id" value="@identityCard.Id" />
+                        <button type="submit" class="btn btn-sm btn-danger">Șterge</button>
+                    </form>
+                </td>
             </tr>
         }
     </tbody>
