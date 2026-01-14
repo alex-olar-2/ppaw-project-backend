@@ -36,7 +36,7 @@ namespace ExtractInfoIdentityDocument
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        // Această metodă este apelată de runtime. Folosește-o pentru a adăuga servicii în container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers()
@@ -88,27 +88,25 @@ namespace ExtractInfoIdentityDocument
             {
                 context.UseSqlServer(Configuration.GetConnectionString("Default"));
 
+                // Poți comenta aceste două linii în producție pentru performanță/securitate
                 context.EnableSensitiveDataLogging();
-
                 context.LogTo(Console.WriteLine);
             });
 
-            // --- 3. Configurare Autentificare (MODIFICAT) ---
-            // Setăm schema default pe Cookie pentru a proteja paginile MVC (Admin)
-            // Dar păstrăm și JWT pentru request-urile de API
+            // --- 3. Configurare Autentificare ---
             services.AddAuthentication(options =>
             {
-                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme; // Implicit Cookie
+                options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultSignInScheme = CookieAuthenticationDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = CookieAuthenticationDefaults.AuthenticationScheme;
             })
-            .AddCookie(options => // Configurare Cookie
+            .AddCookie(options =>
             {
-                options.LoginPath = "/Account/Login"; // Ruta către pagina de login
-                options.AccessDeniedPath = "/Account/AccessDenied"; // Ruta pentru acces interzis
-                options.ExpireTimeSpan = TimeSpan.FromMinutes(60); // Expiră după 60 min
+                options.LoginPath = "/Account/Login";
+                options.AccessDeniedPath = "/Account/AccessDenied";
+                options.ExpireTimeSpan = TimeSpan.FromMinutes(60);
             })
-            .AddJwtBearer(options => // Configurare JWT (rămâne neschimbată)
+            .AddJwtBearer(options =>
             {
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
@@ -123,15 +121,15 @@ namespace ExtractInfoIdentityDocument
                 };
             });
 
-            // --- 4. Înregistrare Servicii ---
+            // --- 4. Înregistrare Servicii (Dependency Injection) ---
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
             services.AddTransient<IPrincipal>(provider => provider.GetService<IHttpContextAccessor>().HttpContext.User);
 
-            services.AddControllersWithViews(); // MVC
+            services.AddControllersWithViews(); // Necesar pentru MVC
 
             services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 
-            // Serviciile existente
+            // Serviciile aplicației
             services.AddScoped<IRoleService, RoleService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IUseService, UseService>();
@@ -139,37 +137,39 @@ namespace ExtractInfoIdentityDocument
             services.AddScoped<IIdentityCardService, IdentityCardService>();
             services.AddScoped<IIdentityDocumentAnalyzerService, IdentityDocumentAnalyzerService>();
 
-            // Serviciile pentru Auth
+            // Servicii pentru Auth/Token
             services.AddScoped<ITokenService, TokenService>();
             services.AddScoped<IUserContextService, UserContextService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        // Această metodă este apelată de runtime. Folosește-o pentru a configura pipeline-ul HTTP.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             app.UseDeveloperExceptionPage();
+
+            // Activăm Swagger
             app.UseSwagger();
             app.UseSwaggerUI(c => {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "ExtractInfoIdentityDocument v1");
-                c.RoutePrefix = "";
+                // MODIFICAT: Am scos RoutePrefix = "" pentru ca Swagger să fie la /swagger, nu pe root.
             });
 
-            var option = new RewriteOptions();
-            option.AddRedirect("^$", "index.html"); // Redirecționare existentă (poate vrei să o schimbi spre Admin dacă e default)
-            app.UseRewriter(option);
+            // MODIFICAT: Am scos blocul RewriteOptions care redirecționa root-ul la index.html (Swagger)
+            // Astfel, root-ul "/" va fi preluat de ruta default MVC (Admin/Index).
 
             app.UseHttpsRedirection();
-            app.UseStaticFiles(); // NECESAR pentru a încărca CSS/JS în paginile de Login/Admin
+            app.UseStaticFiles(); // Necesar pentru CSS/JS în Login și Admin
 
             app.UseRouting();
 
             // --- 5. Activare Middleware Autentificare ---
-            app.UseAuthentication(); // Verifică cookie-ul sau token-ul
-            app.UseAuthorization();  // Verifică rolurile/permisiunile
+            app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
             {
                 // Ruta default pentru admin/MVC
+                // Când accesezi "/", te va duce la AdminController -> Index (sau Login dacă nu ești autentificat)
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Admin}/{action=Index}/{id?}"
