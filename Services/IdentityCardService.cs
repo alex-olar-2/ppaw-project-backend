@@ -3,17 +3,23 @@
 using ExtractInfoIdentityDocument.Models;
 using ExtractInfoIdentityDocument.Services.Interface;
 
+using System.Data;
+
 namespace ExtractInfoIdentityDocument.Services
 {
     public class IdentityCardService : IIdentityCardService
     {
         private readonly IRepository<IdentityCard> _identityCardRepository;
 
+        private readonly IFileLoggingService _loggingService;
+
         public IdentityCardService(
-            IRepository<IdentityCard> identityCardRepository
+            IRepository<IdentityCard> identityCardRepository,
+            IFileLoggingService loggingService
             )
         {
             _identityCardRepository = identityCardRepository;
+            _loggingService = loggingService;
         }
 
         public async Task<IdentityCard> GetIdentityCardById(string identityCardId)
@@ -76,6 +82,9 @@ namespace ExtractInfoIdentityDocument.Services
                 };
 
                 await _identityCardRepository.InsertAsync(identityCard);
+
+                await _loggingService.LogActionAsync("CREATE", "IdentityCard", $"A fost creat card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
+
             }
             catch (Exception ex)
             {
@@ -88,6 +97,8 @@ namespace ExtractInfoIdentityDocument.Services
             try
             {
                 await _identityCardRepository.InsertAsync(identityCard);
+
+                await _loggingService.LogActionAsync("CREATE", "IdentityCard", $"A fost creat card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
             }
             catch (Exception ex)
             {
@@ -113,6 +124,8 @@ namespace ExtractInfoIdentityDocument.Services
                     identityCard.IsVisible = isVisible;
 
                     await _identityCardRepository.UpdateAsync(identityCard);
+
+                    await _loggingService.LogActionAsync("UPDATE", "IdentityCard", $"A fost modificat card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
                 }
             }
             catch (Exception ex)
@@ -128,6 +141,8 @@ namespace ExtractInfoIdentityDocument.Services
                 IdentityCard identityCard = await GetIdentityCardById(identityCardId);
 
                 await _identityCardRepository.DeleteAsync(identityCard);
+
+                await _loggingService.LogActionAsync("DELETE", "IdentityCard", $"A fost sters card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
             }
             catch (Exception ex)
             {
@@ -142,6 +157,8 @@ namespace ExtractInfoIdentityDocument.Services
                 IdentityCard identityCard = await GetIdentityCardByCnp(cnp);
 
                 await _identityCardRepository.DeleteAsync(identityCard);
+
+                await _loggingService.LogActionAsync("DELETE", "IdentityCard", $"A fost sters card de identitate cu CNP: {identityCard.Cnp} si Id: {identityCard.Id}");
             }
             catch (Exception ex)
             {
@@ -156,6 +173,8 @@ namespace ExtractInfoIdentityDocument.Services
                 IList<IdentityCard> identityCards = await _identityCardRepository.GetAllAsync();
 
                 await _identityCardRepository.DeleteAsync(identityCards);
+
+                await _loggingService.LogActionAsync("DELETE", "IdentityCard", $"Au fost sterse toate cartile de identitate");
             }
             catch (Exception ex)
             {
